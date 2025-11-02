@@ -29,6 +29,7 @@
 
 .col-l {
     flex: 1;
+    padding-bottom: 10px;
 }
 
 .home {
