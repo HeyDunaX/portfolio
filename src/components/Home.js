@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Row, Col} from 'react-bootstrap';
 import { FaFacebook, FaTiktok, FaInstagram, FaGithub } from 'react-icons/fa';
-import image from '../assets/avatar.jpg';
+import image from '../assets/avatar.png';
 
 const Home = () => {
   return (
@@ -9,11 +9,11 @@ const Home = () => {
   <Row className="p-5 col-l home">
     <Col md={6}>
       <h2 className="Name">I am Duy Nhan</h2>  
-      <h1 className="Xtitle">Frontend Developer + <br/> UX Designer</h1>
+      <h1 className="Xtitle">AI Reseacher</h1>
       <p className="content">
-        I break down complex user experience problems to
-        create integrity focused solutions that connect
-        billions of people
+        I am a student majoring in Artificial Intelligence
+        at the Posts and Telecommunications Institute of Technology, with a strong passion for research
+        in the field.
       </p>
       <Row className="align-items-center social flex-column flex-md-row">
         <Col md={8} className="d-flex flex-column flex-md-row align-items-center">
@@ -22,7 +22,7 @@ const Home = () => {
             <a href="https://www.facebook.com/trannhan.duy.9" className="me-2"><FaFacebook size={30} /></a>
             <a href="https://www.tiktok.com/@dunadev05?_t=8oAvgxAVKxl&_r=1" className="me-2"><FaTiktok size={30} /></a>
             <a href="https://www.instagram.com/_duynhan_?igsh=MWRwcXFqN2Y1MW53aQ==" className="me-2"><FaInstagram size={30} /></a>
-            <a href="https://github.com" className="me-2"><FaGithub size={30} /></a>
+            <a href="https://github.com/HeyDunaX" className="me-2"><FaGithub size={30} /></a>
           </div>
         </Col>
       </Row>

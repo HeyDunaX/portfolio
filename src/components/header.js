@@ -40,7 +40,7 @@ const Header = () => {
 
   return (
     <Navbar expand="lg" sticky="top" className="service-bg navbar">
-      <Navbar.Brand href="#home" style={{ color: '#ffffff' }} className="brand"><svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="50px" fill="#FFFFFF"><path d="M236-345 100-480l440-440h271L236-345ZM540-40 303-277l237-237h271L574-277 811-40H540Z"/></svg>@dunadev05</Navbar.Brand>
+      <Navbar.Brand href="#home" style={{ color: '#ffffff' }} className="brand"><svg xmlns="http://www.w3.org/2000/svg" height="40px" viewBox="0 -960 960 960" width="50px" fill="#FFFFFF"><path d="M236-345 100-480l440-440h271L236-345ZM540-40 303-277l237-237h271L574-277 811-40H540Z"/></svg>DunaX</Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
