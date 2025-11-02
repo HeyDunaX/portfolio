@@ -33,6 +33,7 @@
 .home {
     height: auto;
     z-index: 10;
+    overflow: visible;
 }
 
 .btn-down {
