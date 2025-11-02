@@ -7,9 +7,9 @@ const Home = () => {
   return (
 <Container id="home" fluid className="text-start py-5 home-bg">
   <Row className="p-5 col-l home">
-    <Col md={6}>
+    <Col md={7}>
       <h2 className="Name">{"I'm Duy Nhan"}</h2>  
-      <h1 className="Xtitle">AI<br/>Researcher</h1>
+      <h1 className="Xtitle">AI<br/>Research</h1>
       <p className="content">
         I am a student majoring in Artificial Intelligence
         at the Posts and Telecommunications Institute of Technology, with a strong passion for research
