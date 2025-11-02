@@ -23,13 +23,10 @@
     font-style: normal;
     font-weight: 700;
     margin-bottom: 20px;
-    line-height: 1.3;
-    overflow: visible;
 }
 
 .col-l {
     flex: 1;
-    padding-bottom: 10px;
 }
 
 .home {
