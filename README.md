@@ -32,6 +32,7 @@ cd portfolio
 npm install
 ```
 **Development**
+
 Run the app locally:
 
 ```bash
