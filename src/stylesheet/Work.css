@@ -1,114 +1,120 @@
+/* Container tổng */
+#productions {
+    padding-top: 100px;
+    padding-bottom: 100px;
+    background-color: #0f051d; /* Màu nền tối của bạn */
+}
+
+/* Tiêu đề chính Gradient */
 .Xwork {
     color: #fff;
     font-size: 45px;
     background: linear-gradient(45deg, rgba(255, 0, 150, 0.8), rgba(0, 204, 255, 0.8));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    font-style: normal;
     font-weight: 700;
-    font-family: "Sora";
-    margin-bottom: 20px;
+    font-family: "Sora", sans-serif;
+    margin-bottom: 50px;
+    text-align: center;
 }
 
-#productions {
-    height: auto;
-    padding-top: 100px;
-    padding-left: 20px;
-    padding-right: 20px;
-    background-color: #0f051d; /* Đảm bảo đồng bộ màu nền web */
-}
-
-/* Biến thể của work-item để hiển thị Publication */
+/* Khung bao ngoài mỗi bài báo (Publication Card) */
 .work-item-pub {
-    position: relative;
-    width: 100%;
-    background-color: #140C1C;
-    margin: 0 auto;
-    border-radius: 15px;
+    background-color: #140C1C; /* Màu nền box */
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 35px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    text-align: left; /* Quan trọng: Reset lại căn lề trái */
     display: flex;
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: 0.3s ease;
+    align-items: flex-start;
 }
 
 .work-item-pub:hover {
-    border-color: rgba(0, 204, 255, 0.5);
+    border-color: #3b82f6;
     transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Metadata bên trái */
+/* Cột bên trái: Năm, Track, Rank */
 .pub-meta {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    padding-right: 20px;
+    padding-right: 25px;
+    min-width: 140px; /* Đảm bảo độ rộng cố định */
 }
 
 .pub-year {
-    background-color: #007bff; /* Màu xanh chuẩn ảnh 2 */
-    color: white;
-    font-size: 1.5rem;
+    background-color: #007bff; /* Màu xanh đậm như ảnh 2 */
+    color: #fff;
+    font-size: 1.6rem;
     font-weight: 800;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 10px 0;
+    border-radius: 12px;
     text-align: center;
 }
 
 .pub-track {
-    background-color: #0056b3;
-    font-size: 0.65rem;
+    background-color: #1a73e8;
+    color: #fff;
+    font-size: 0.7rem;
     font-weight: 700;
-    padding: 5px;
-    border-radius: 5px;
+    padding: 6px;
+    border-radius: 8px;
     text-align: center;
-    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .pub-rank {
-    /* Tận dụng gradient tím từ tooltip cũ của bạn */
+    /* Gradient giống tooltip cũ của bạn */
     background: linear-gradient(135deg, rgba(127, 17, 224, 1), rgba(53, 27, 103, 1));
-    font-size: 0.75rem;
+    color: #fff;
+    font-size: 0.8rem;
     font-weight: 800;
-    padding: 5px;
-    border-radius: 5px;
+    padding: 6px;
+    border-radius: 8px;
     text-align: center;
-    color: white;
 }
 
-/* Thông tin bên phải */
+/* Cột bên phải: Nội dung bài báo */
 .pub-info {
-    padding-left: 10px;
+    flex: 1;
 }
 
-.tooltiptitle {
-    font-family: "Sora";
-    color: #3b82f6; /* Màu xanh tiêu đề paper */
+.pub-title-text {
+    color: #3b82f6 !important; /* Màu xanh title bài báo */
+    font-family: "Sora", sans-serif;
     font-weight: 700;
-    font-size: 1.3rem;
-    margin-bottom: 5px;
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+    line-height: 1.3;
 }
 
 .pub-venue {
-    color: #94a3b8;
+    color: #94a3b8; /* Màu xám dòng hội nghị */
     font-size: 0.9rem;
     font-weight: 500;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .pub-authors {
-    color: #ccc;
-    font-size: 0.9rem;
-    margin-bottom: 10px;
+    color: #cbd5e1; /* Màu trắng xám cho tên tác giả */
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+    line-height: 1.5;
 }
 
 .pub-desc {
-    color: #888;
+    color: #64748b; /* Màu Abstract chìm hơn */
     font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    line-height: 1.6;
 }
 
-/* Footer nút PDF & Tags */
+/* Footer: Nút PDF và Tags */
 .pub-footer {
     display: flex;
     align-items: center;
@@ -116,19 +122,19 @@
     flex-wrap: wrap;
 }
 
-.btn-pdf {
-    background-color: #004dc0;
-    color: white !important;
+.pub-pdf-btn {
+    background-color: #004dc0; /* Xanh đậm nút PDF */
+    color: #fff !important;
     text-decoration: none !important;
-    padding: 6px 20px;
+    padding: 7px 20px;
     border-radius: 20px;
     font-weight: 700;
     font-size: 0.8rem;
     transition: 0.3s;
 }
 
-.btn-pdf:hover {
-    background-color: #003380;
+.pub-pdf-btn:hover {
+    background-color: #003a91;
     transform: scale(1.05);
 }
 
@@ -136,22 +142,30 @@
     background-color: rgba(59, 130, 246, 0.1) !important;
     color: #93c5fd !important;
     border: 1px solid rgba(59, 130, 246, 0.2);
-    padding: 6px 15px !important;
+    padding: 7px 15px !important;
     font-size: 0.75rem !important;
+    font-weight: 600;
 }
 
-/* Responsive */
+/* Mobile Responsive */
 @media (max-width: 768px) {
+    .work-item-pub {
+        flex-direction: column;
+        padding: 20px;
+    }
+    
     .pub-meta {
         flex-direction: row;
+        width: 100%;
         margin-bottom: 20px;
         padding-right: 0;
     }
+    
     .pub-year, .pub-track, .pub-rank {
-        width: auto;
         flex: 1;
     }
-    .work-item-pub {
-        padding: 20px;
+
+    .pub-title-text {
+        font-size: 1.2rem;
     }
 }
