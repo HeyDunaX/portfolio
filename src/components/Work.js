@@ -24,7 +24,7 @@ const projects = [
     authors: 'Long Nguyen, Dat T. Truong, Nhan D. Tran, Quynh Vo, Quy Tran Nguyen, Tho Quan',
     description: 'Abstract to be added.',
     tags: ['Low-resource NMT', 'Data Augmentation'],
-    pdfLink: '#'
+    pdfLink: 'https://openreview.net/forum?id=XziOk4BTfv'
   }
 ];
 
