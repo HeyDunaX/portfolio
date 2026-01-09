@@ -29,7 +29,7 @@
 }
 
 .work-item-pub:hover {
-    border-color: #3b82f6;
+    border-color: #8750f7;
     transform: translateY(-5px);
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
@@ -44,22 +44,22 @@
 }
 
 .pub-year {
-    background-color: #007bff;
+    background-color: #8750f7;
     color: #fff !important;
     font-size: 1.6rem;
     font-weight: 800;
     padding: 10px 0;
-    border-radius: 12px;
+    border-radius: 16px;
     text-align: center;
 }
 
 .pub-track {
-    background-color: #1a73e8;
+    background-color: #8750f7;
     color: #fff !important;
     font-size: 0.7rem;
     font-weight: 700;
     padding: 6px;
-    border-radius: 8px;
+    border-radius: 12px;
     text-align: center;
     text-transform: uppercase;
 }
@@ -70,7 +70,7 @@
     font-size: 0.8rem;
     font-weight: 800;
     padding: 6px;
-    border-radius: 8px;
+    border-radius: 12px;
     text-align: center;
 }
 
@@ -81,7 +81,7 @@
 }
 
 .pub-title-text {
-    color: #3b82f6 !important;
+    color: #8750f7 !important;
     font-family: "Sora", sans-serif;
     font-weight: 700;
     font-size: 1.4rem;
@@ -95,13 +95,13 @@
 }
 
 .pub-authors {
-    color: #cbd5e1 !important;
+    color: #fff !important;
     font-size: 0.95rem;
     margin-bottom: 10px;
 }
 
 .pub-desc {
-    color: #64748b !important;
+    color: #cbd5e1 !important;
     font-size: 0.9rem;
     margin-bottom: 20px;
 }
@@ -116,7 +116,7 @@
 }
 
 .pub-pdf-btn {
-    background-color: #004dc0 !important;
+    background-color: #8750f7 !important;
     color: #fff !important;
     padding: 7px 20px;
     border-radius: 20px;
@@ -127,7 +127,7 @@
 
 .pub-tag {
     background-color: rgba(59, 130, 246, 0.1) !important;
-    color: #93c5fd !important;
+    color: #fff !important;
     border: 1px solid rgba(59, 130, 246, 0.2);
     padding: 7px 15px !important;
 }
