@@ -60,7 +60,7 @@ const awardsData = [
         color: '#94a3b8'
     },
     {
-        title: 'Giải Khuyến Khích Cuộc thi "Vẽ tranh cùng AI" SIU',
+        title: 'Giải Khuyến Khích Cuộc thi "Markethon"',
         year: '2024',
         icon: <FaAward />,
         color: '#94a3b8'

@@ -92,7 +92,7 @@ const Header = () => {
             onSetActive={() => handleSetActive('about')}
             style={{ color: '#ffffff' }}
           >
-            Resume
+            Awards
           </ScrollLink> 
           <ScrollLink
             to="news"
