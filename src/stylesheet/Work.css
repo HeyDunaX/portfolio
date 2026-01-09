@@ -132,6 +132,46 @@
     padding: 7px 15px !important;
 }
 
+/* --- Nút Xem thêm cho Description --- */
+.desc-toggle-btn {
+    color: #8750f7;
+    cursor: pointer;
+    font-weight: 700;
+    margin-left: 5px;
+    font-size: 0.85rem;
+    transition: color 0.3s ease;
+}
+
+.desc-toggle-btn:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* --- Nút Xem thêm cho Danh sách (Pagination) --- */
+.see-more-list-btn {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #8750f7;
+    padding: 12px 30px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-family: "Sora", sans-serif;
+    transition: all 0.3s ease;
+    margin-bottom: 50px;
+}
+
+.see-more-list-btn:hover {
+    background-color: #8750f7;
+    box-shadow: 0 0 20px rgba(135, 80, 247, 0.4);
+    transform: translateY(-3px);
+}
+
+/* Đảm bảo description không bị mất khoảng cách khi toggle */
+.pub-desc {
+    transition: all 0.3s ease;
+    min-height: 1.5em;
+}
+
 /* Mobile Responsive */
 
 @media (max-width: 768px) {

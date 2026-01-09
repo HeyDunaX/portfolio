@@ -1,0 +1,98 @@
+#awards {
+    background-color: #050709;
+    padding-top: 100px;
+    padding-bottom: 100px;
+}
+
+.awards-bg {
+    background: radial-gradient(circle at 10% 10%, rgba(135, 80, 247, 0.1), transparent 30%),
+        radial-gradient(circle at 90% 90%, rgba(135, 80, 247, 0.1), transparent 30%),
+        #050709;
+}
+
+.Xawards {
+    color: #fff;
+    font-size: 45px;
+    background: linear-gradient(45deg, #8750f7, #ffffff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+    font-family: "Sora", sans-serif;
+    margin-bottom: 20px;
+}
+
+.award-item {
+    background-color: #140C1C;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.award-item:hover {
+    border-color: #8750f7;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    background-color: #1d1424;
+}
+
+.award-icon {
+    min-width: 60px;
+    height: 60px;
+    border: 2px solid;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.award-info {
+    flex: 1;
+}
+
+.award-year {
+    display: inline-block;
+    background-color: rgba(135, 80, 247, 0.2);
+    color: #8750f7;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.award-title {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+    line-height: 1.4;
+    font-family: "Poppins";
+}
+
+@media (max-width: 768px) {
+    .Xawards {
+        font-size: 32px;
+    }
+
+    .award-item {
+        padding: 20px;
+    }
+
+    .award-icon {
+        min-width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    .award-title {
+        font-size: 1rem;
+    }
+}
