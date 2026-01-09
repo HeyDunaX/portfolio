@@ -4,7 +4,7 @@ import Header from './components/header.js';
 import Home from './components/Home.js';
 import Resume from './components/Resume.js';
 import Service from './components/Service.js';
-import Work from './components/Work.js';
+import Publications from './components/Work.js';
 import Skill from './components/Skill.js';
 import Blog from './components/Blog.js';
 
@@ -15,7 +15,7 @@ function App() {
       <main>
         <Home />
         <Service />
-        <Work />
+        <Publications />
         <Skill />
         <Blog />
       </main>

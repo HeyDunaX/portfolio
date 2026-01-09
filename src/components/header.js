@@ -62,7 +62,7 @@ const Header = () => {
             onSetActive={() => handleSetActive('projects')}
             style={{ color: '#ffffff' }}
           >
-            Service
+            Topic
           </ScrollLink>
           <ScrollLink
             to="productions"
@@ -72,7 +72,7 @@ const Header = () => {
             onSetActive={() => handleSetActive('productions')}
             style={{ color: '#ffffff' }}
           >
-            Work
+            Publications
           </ScrollLink>
           <ScrollLink
             to="issue"

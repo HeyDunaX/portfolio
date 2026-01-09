@@ -1,8 +1,8 @@
 .Xwork {
     color: #fff;
     font-size: 45px;
-    background: linear-gradient(45deg, rgba(255, 0, 150, 0.8), rgba(0, 204, 255, 0.8)); /* Gradient màu chữ */
-    -webkit-background-clip: text; /* Clip gradient vào chữ */
+    background: linear-gradient(45deg, rgba(255, 0, 150, 0.8), rgba(0, 204, 255, 0.8));
+    -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-style: normal;
     font-weight: 700;
@@ -15,72 +15,143 @@
     padding-top: 100px;
     padding-left: 20px;
     padding-right: 20px;
+    background-color: #0f051d; /* Đảm bảo đồng bộ màu nền web */
 }
 
-.work-item {
+/* Biến thể của work-item để hiển thị Publication */
+.work-item-pub {
     position: relative;
-    overflow: hidden;
     width: 100%;
-    max-width: 550px;
-    height: 450px;
     background-color: #140C1C;
-    margin:  0 auto;
-    border-radius: 10px;
+    margin: 0 auto;
+    border-radius: 15px;
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    margin-top: 60px;
-    margin-bottom: 60px;
-  }
-  
-  .work-item img {
-    width: 500px;
-    height: 400px;
-    object-fit: contain; /* Đảm bảo ảnh không bị méo mó */
-    transition: none; /* Không có hiệu ứng zoom khi hover */
-  }
-  
-  /* Đặt ảnh ở lề dưới item và không ảnh hưởng đến bố cục */
-  .work-item {
-    position: relative;
-    margin-bottom: 1rem;
-  }
-  
-  /* Tooltip sẽ hiển thị khi hover lên item */
-  .tooltip {
-    position: absolute;
-    bottom: 10px; /* Khoảng cách từ lề dưới của phần tử chứa ảnh */
-    left: 15px; /* Khoảng cách từ lề trái của phần tử chứa ảnh */
-    width: calc(100% - 30px); /* Đảm bảo tooltip không tràn ra ngoài */
-    background: linear-gradient(135deg, rgba(127, 17, 224, 1), rgba(53, 27, 103, 1));
-    border-radius: 10px;
-    color: white;
-    text-align: left;
-    padding: 1rem;
-    transform: translateY(100%);
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }  
-  
-  /* Tooltip sẽ hiển thị khi hover lên work-item */
-  .work-item:hover .tooltip {
-    transform: translateY(0);
-    opacity: 1;
-  }
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: 0.3s ease;
+}
 
-  .tooltiptiltle {
+.work-item-pub:hover {
+    border-color: rgba(0, 204, 255, 0.5);
+    transform: translateY(-5px);
+}
+
+/* Metadata bên trái */
+.pub-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 20px;
+}
+
+.pub-year {
+    background-color: #007bff; /* Màu xanh chuẩn ảnh 2 */
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 800;
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.pub-track {
+    background-color: #0056b3;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+}
+
+.pub-rank {
+    /* Tận dụng gradient tím từ tooltip cũ của bạn */
+    background: linear-gradient(135deg, rgba(127, 17, 224, 1), rgba(53, 27, 103, 1));
+    font-size: 0.75rem;
+    font-weight: 800;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+}
+
+/* Thông tin bên phải */
+.pub-info {
+    padding-left: 10px;
+}
+
+.tooltiptitle {
     font-family: "Sora";
-  }
-  
-  /* Responsive */
-  @media (max-width: 768px) {
-    .work-item img {
-      width: 90%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của cột */
-      height: auto; /* Giữ tỷ lệ khung hình của ảnh */
+    color: #3b82f6; /* Màu xanh tiêu đề paper */
+    font-weight: 700;
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+.pub-venue {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.pub-authors {
+    color: #ccc;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.pub-desc {
+    color: #888;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+/* Footer nút PDF & Tags */
+.pub-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-pdf {
+    background-color: #004dc0;
+    color: white !important;
+    text-decoration: none !important;
+    padding: 6px 20px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.8rem;
+    transition: 0.3s;
+}
+
+.btn-pdf:hover {
+    background-color: #003380;
+    transform: scale(1.05);
+}
+
+.pub-tag {
+    background-color: rgba(59, 130, 246, 0.1) !important;
+    color: #93c5fd !important;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    padding: 6px 15px !important;
+    font-size: 0.75rem !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .pub-meta {
+        flex-direction: row;
+        margin-bottom: 20px;
+        padding-right: 0;
     }
-    .work-item {
-      max-width: 100%;
-      width: 100%;
+    .pub-year, .pub-track, .pub-rank {
+        width: auto;
+        flex: 1;
     }
-  }
-  
+    .work-item-pub {
+        padding: 20px;
+    }
+}
