@@ -9,7 +9,7 @@ const projects = [
     track: 'MAIN TRACK',
     rank: 'A*',
     title: 'Anonymous',
-    venue: 'Anonymous', // Dòng thông tin hội nghị mới thêm
+    venue: 'Anonymous',
     authors: 'Anonymous',
     description: 'Abstract to be added.',
     tags: ['Low-resource NMT', 'Linguistic'],
@@ -30,36 +30,34 @@ const projects = [
 
 const Work = () => {
   return (
-    <Container id="productions" fluid className="work-bg">
+    <Container id="productions" fluid>
       <SlideUp>
         <div className="text-center mb-5">
           <h2 className="Xwork">Selected Publications</h2>
-          <p className="text">Academic research and recent works</p>
+          <p className="text" style={{color: '#aaa'}}>Academic research and recent works</p>
         </div>
 
         <Row className="justify-content-center">
           {projects.map((project, index) => (
             <Col xs={12} lg={10} key={index} className="mb-4">
-              <div className="pub-card">
-                <Row className="align-items-start">
+              {/* class 'work-item-pub' phải khớp với CSS */}
+              <div className="work-item-pub">
+                <Row className="align-items-start w-100 g-0">
                   {/* Cột bên trái: Badge Meta */}
-                  <Col xs={12} md={2} className="pub-meta-side mb-3 mb-md-0">
-                    <div className="pub-year-box">{project.year}</div>
-                    <div className="pub-track-tag">{project.track}</div>
-                    <div className="pub-rank-tag">{project.rank}</div>
+                  <Col xs={12} md={2} className="pub-meta mb-3 mb-md-0">
+                    <div className="pub-year">{project.year}</div>
+                    <div className="pub-track">{project.track}</div>
+                    {project.rank && <div className="pub-rank">{project.rank}</div>}
                   </Col>
 
                   {/* Cột bên phải: Nội dung chi tiết */}
-                  <Col xs={12} md={10} className="pub-main-info">
+                  <Col xs={12} md={10} className="pub-info">
                     <h4 className="pub-title-text">{project.title}</h4>
+                    <p className="pub-venue">{project.venue}</p>
+                    <p className="pub-authors">{project.authors}</p>
+                    <p className="pub-desc">{project.description}</p>
                     
-                    {/* Dòng nhỏ ghi tên hội nghị - Giống ảnh 2 */}
-                    <p className="pub-venue-text">{project.venue}</p>
-                    
-                    <p className="pub-authors-text">{project.authors}</p>
-                    <p className="pub-desc-text">{project.description}</p>
-                    
-                    <div className="pub-footer-action">
+                    <div className="pub-footer">
                       <a 
                         href={project.pdfLink} 
                         className="pub-pdf-btn"
@@ -70,7 +68,7 @@ const Work = () => {
                       </a>
                       
                       {project.tags.map((tag, tIndex) => (
-                        <Badge key={tIndex} pill className="pub-skill-tag">
+                        <Badge key={tIndex} pill className="pub-tag">
                           {tag}
                         </Badge>
                       ))}

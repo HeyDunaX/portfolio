@@ -2,7 +2,7 @@
 #productions {
     padding-top: 100px;
     padding-bottom: 100px;
-    background-color: #0f051d; /* Màu nền tối của bạn */
+    background-color: #0f051d;
 }
 
 /* Tiêu đề chính Gradient */
@@ -14,21 +14,18 @@
     -webkit-text-fill-color: transparent;
     font-weight: 700;
     font-family: "Sora", sans-serif;
-    margin-bottom: 50px;
-    text-align: center;
+    margin-bottom: 20px;
 }
 
-/* Khung bao ngoài mỗi bài báo (Publication Card) */
+/* Khung bao ngoài bài báo */
 .work-item-pub {
-    background-color: #140C1C; /* Màu nền box */
+    background-color: #140C1C !important; /* Ép màu nền box */
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
-    padding: 35px;
-    margin-bottom: 30px;
+    padding: 30px;
     transition: all 0.3s ease;
-    text-align: left; /* Quan trọng: Reset lại căn lề trái */
+    text-align: left !important; /* Ép căn trái cho nội dung */
     display: flex;
-    align-items: flex-start;
 }
 
 .work-item-pub:hover {
@@ -37,18 +34,18 @@
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Cột bên trái: Năm, Track, Rank */
+/* Cột bên trái */
 .pub-meta {
     display: flex;
     flex-direction: column;
     gap: 10px;
     padding-right: 25px;
-    min-width: 140px; /* Đảm bảo độ rộng cố định */
+    min-width: 140px;
 }
 
 .pub-year {
-    background-color: #007bff; /* Màu xanh đậm như ảnh 2 */
-    color: #fff;
+    background-color: #007bff;
+    color: #fff !important;
     font-size: 1.6rem;
     font-weight: 800;
     padding: 10px 0;
@@ -58,20 +55,18 @@
 
 .pub-track {
     background-color: #1a73e8;
-    color: #fff;
+    color: #fff !important;
     font-size: 0.7rem;
     font-weight: 700;
     padding: 6px;
     border-radius: 8px;
     text-align: center;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .pub-rank {
-    /* Gradient giống tooltip cũ của bạn */
     background: linear-gradient(135deg, rgba(127, 17, 224, 1), rgba(53, 27, 103, 1));
-    color: #fff;
+    color: #fff !important;
     font-size: 0.8rem;
     font-weight: 800;
     padding: 6px;
@@ -79,63 +74,55 @@
     text-align: center;
 }
 
-/* Cột bên phải: Nội dung bài báo */
+/* Cột bên phải */
 .pub-info {
     flex: 1;
+    text-align: left !important;
 }
 
 .pub-title-text {
-    color: #3b82f6 !important; /* Màu xanh title bài báo */
+    color: #3b82f6 !important;
     font-family: "Sora", sans-serif;
     font-weight: 700;
     font-size: 1.4rem;
-    margin-bottom: 6px;
-    line-height: 1.3;
+    margin-bottom: 8px;
 }
 
 .pub-venue {
-    color: #94a3b8; /* Màu xám dòng hội nghị */
+    color: #94a3b8 !important;
     font-size: 0.9rem;
-    font-weight: 500;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
 }
 
 .pub-authors {
-    color: #cbd5e1; /* Màu trắng xám cho tên tác giả */
+    color: #cbd5e1 !important;
     font-size: 0.95rem;
-    margin-bottom: 12px;
-    line-height: 1.5;
+    margin-bottom: 10px;
 }
 
 .pub-desc {
-    color: #64748b; /* Màu Abstract chìm hơn */
+    color: #64748b !important;
     font-size: 0.9rem;
-    margin-bottom: 25px;
-    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
-/* Footer: Nút PDF và Tags */
+/* Footer & Buttons */
 .pub-footer {
     display: flex;
     align-items: center;
     gap: 12px;
     flex-wrap: wrap;
+    justify-content: flex-start !important;
 }
 
 .pub-pdf-btn {
-    background-color: #004dc0; /* Xanh đậm nút PDF */
+    background-color: #004dc0 !important;
     color: #fff !important;
-    text-decoration: none !important;
     padding: 7px 20px;
     border-radius: 20px;
     font-weight: 700;
     font-size: 0.8rem;
-    transition: 0.3s;
-}
-
-.pub-pdf-btn:hover {
-    background-color: #003a91;
-    transform: scale(1.05);
+    text-decoration: none !important;
 }
 
 .pub-tag {
@@ -143,29 +130,13 @@
     color: #93c5fd !important;
     border: 1px solid rgba(59, 130, 246, 0.2);
     padding: 7px 15px !important;
-    font-size: 0.75rem !important;
-    font-weight: 600;
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-    .work-item-pub {
-        flex-direction: column;
-        padding: 20px;
-    }
-    
     .pub-meta {
         flex-direction: row;
         width: 100%;
-        margin-bottom: 20px;
         padding-right: 0;
-    }
-    
-    .pub-year, .pub-track, .pub-rank {
-        flex: 1;
-    }
-
-    .pub-title-text {
-        font-size: 1.2rem;
     }
 }
