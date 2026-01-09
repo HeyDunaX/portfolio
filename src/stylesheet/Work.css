@@ -133,10 +133,74 @@
 }
 
 /* Mobile Responsive */
+
 @media (max-width: 768px) {
+    .work-item-pub {
+        padding: 20px !important; /* Giảm padding tổng thể */
+    }
+
+    /* Thu nhỏ các khối meta (Năm, Track, Rank) trên mobile */
     .pub-meta {
-        flex-direction: row;
-        width: 100%;
-        padding-right: 0;
+        flex-direction: row !important;
+        flex-wrap: wrap;
+        gap: 8px !important;
+        margin-bottom: 15px !important;
+        padding-right: 0 !important;
+    }
+
+    .pub-year {
+        font-size: 1.1rem !important; /* Giảm size chữ năm */
+        padding: 6px 15px !important;
+        min-width: 70px;
+        border-radius: 8px !important;
+    }
+
+    .pub-track, .pub-rank {
+        font-size: 0.6rem !important; /* Chữ nhỏ lại cho vừa khung */
+        padding: 6px 12px !important;
+        border-radius: 6px !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Căn chỉnh lại phần thông tin */
+    .pub-info {
+        padding-left: 0 !important;
+    }
+
+    .pub-title-text {
+        font-size: 1.1rem !important; /* Tiêu đề gọn hơn trên đth */
+        margin-top: 10px;
+    }
+
+    .pub-venue {
+        font-size: 0.8rem !important;
+    }
+
+    .pub-authors, .pub-desc {
+        font-size: 0.85rem !important;
+    }
+
+    /* --- FIX BUTTONS TRÊN MOBILE --- */
+    .pub-footer {
+        display: flex !important;
+        flex-direction: row !important; /* Ép dàn hàng ngang */
+        flex-wrap: wrap !important;     /* Tự xuống dòng nếu quá dài */
+        gap: 8px !important;            /* Khoảng cách giữa các nút */
+        justify-content: flex-start !important;
+        margin-top: 15px;
+    }
+
+    .pub-pdf-btn {
+        padding: 5px 15px !important; /* Nút PDF nhỏ gọn hơn */
+        font-size: 0.7rem !important;
+        border-radius: 15px !important;
+    }
+
+    .pub-tag {
+        padding: 5px 12px !important; /* Các tag nhỏ lại */
+        font-size: 0.7rem !important;
+        margin: 0 !important; /* Xóa margin thừa của Bootstrap Badge */
     }
 }
