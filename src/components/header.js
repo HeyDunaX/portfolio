@@ -85,11 +85,11 @@ const Header = () => {
             Skill
           </ScrollLink> 
           <ScrollLink
-            to="about"
+            to="awards"
             smooth={true}
             duration={150}
-            className={`nav-link ${active === 'about' ? 'active' : ''}`}
-            onSetActive={() => handleSetActive('about')}
+            className={`nav-link ${active === 'awards' ? 'active' : ''}`}
+            onSetActive={() => handleSetActive('awards')}
             style={{ color: '#ffffff' }}
           >
             Awards
