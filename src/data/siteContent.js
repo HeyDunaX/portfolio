@@ -6,7 +6,8 @@ export const brandName = 'The AI workspace that works for you.';
 
 export const socialLinks = [
   { label: 'Facebook', href: 'https://www.facebook.com/trannhan.duy.9' },
-  { label: 'TikTok', href: 'https://www.tiktok.com/@dunadev05?_t=8oAvgxAVKxl&_r=1' },
+  { label: 'TikTok', href: 'https://www.tiktok.com/@nhantd.rs' },
+  { label: 'Email', href: 'mailto:nhantd.rs@gmail.com' },
   { label: 'Instagram', href: 'https://www.instagram.com/_duynhan_?igsh=MWRwcXFqN2Y1MW53aQ==' },
   { label: 'GitHub', href: 'https://github.com/HeyDunaX' },
 ];
@@ -25,12 +26,12 @@ export const researchHighlights = [
   },
   {
     title: 'Evidence-driven research workflow',
-    copy: 'I organize work so findings move from experiments into a clear, readable, and reusable system.',
+    copy: 'Structured research workflow I organize experiments, notes, and findings into a reproducible system — from hypothesis to result documentation.',
     label: 'Workflow',
   },
   {
     title: 'Scientific writing and publishing',
-    copy: 'I keep the writing stack structured: markdown content, editable media, and a publication flow that is easy to maintain.',
+    copy: 'Academic writing and publishing I write and structure research outputs following academic conventions, from paper drafts to submission-ready manuscripts.',
     label: 'Publishing',
   },
 ];

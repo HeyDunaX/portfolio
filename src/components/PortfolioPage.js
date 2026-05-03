@@ -11,6 +11,7 @@ import {
   FaFacebook,
   FaGithub,
   FaInstagram,
+  FaEnvelope,
   FaMoon,
   FaPlus,
   FaRegStar,
@@ -747,12 +748,12 @@ function PortfolioPage() {
               <div>
                 <span className="eyebrow">Academic portfolio</span>
                 <h1 className="hero-title">
-                  AI research,
+                  AI researcher,
                   <br />
-                  written clearly.
+                  Nhan D. Tran.
                 </h1>
                 <p className="hero-lead">
-                  I am Duy Nhan, a first-year student at PTIT and a research assistant in the URA Research Group at HCMUT. This portfolio keeps the original site information intact, translates the experience into English, and reorganizes it into a clean, Notion-like research workspace.
+                  I am Duy Nhan, a first-year student at PTIT and a research assistant in the URA Research Group at HCMUT. I work at the intersection of natural language processing and linguistic diversity — with a focus on machine translation and information retrieval. My current research centers on machine translation for low-resource Vietnamese languages, building systems that serve communities whose languages remain underrepresented in modern NLP.
                 </p>
                 <div className="hero-meta">
                   {heroStats.map((stat) => (
@@ -775,7 +776,8 @@ function PortfolioPage() {
                     const Icon =
                       social.label === 'Facebook' ? FaFacebook :
                       social.label === 'TikTok' ? FaTiktok :
-                      social.label === 'Instagram' ? FaInstagram : FaGithub;
+                      social.label === 'Instagram' ? FaInstagram :
+                      social.label === 'Email' ? FaEnvelope : FaGithub;
                     return (
                       <a href={social.href} key={social.label} target="_blank" rel="noreferrer" aria-label={social.label}>
                         <Icon />
@@ -802,7 +804,7 @@ function PortfolioPage() {
             <SectionHeading
               eyebrow="Research profile"
               title="Built for AI researcher highlights"
-              copy="The previous skills section is removed. The new structure emphasizes what matters most for an academic and research portfolio: focus, context, and visible output."
+              copy="The structure emphasizes what matters most in a research portfolio: research focus, methodological context, and reproducible output."
             />
             <div className="section-grid">
               {researchHighlights.map((item, index) => (
@@ -823,8 +825,8 @@ function PortfolioPage() {
           <Container fluid="lg">
             <SectionHeading
               eyebrow="Selected output"
-              title="Publications, drafts, and public notes"
-              copy="This feed is optimized for reading, sharing, and direct editing. When Supabase credentials are configured, the same content can be persisted remotely for private studio updates."
+              title="Writing & publications"
+              copy="Papers, drafts, and notes — organized for reading and sharing. Content is updated directly from the research studio."
             />
             <div className="publication-toolbar">
               <div className="filter-group" role="tablist" aria-label="Publication filters">
@@ -1170,8 +1172,7 @@ function PortfolioPage() {
 
       <footer className="footer-bar">
         <Container fluid="lg">
-          <span>Built as a responsive, English-first research portfolio.</span>
-          <span>Theme, studio, and publication flow are ready for Supabase integration.</span>
+          <span>Contact me: nhantd.rs@gmail.com</span>
         </Container>
       </footer>
 
