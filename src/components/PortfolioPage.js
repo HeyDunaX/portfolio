@@ -37,6 +37,7 @@ import {
 const LOCAL_STORAGE_THEME = 'portfolio-theme';
 const LOCAL_STORAGE_POSTS = 'portfolio-posts';
 const LOCAL_STORAGE_UNLOCKED = 'portfolio-admin-unlocked';
+const LOCAL_STORAGE_AUTH_SESSION = 'portfolio-supabase-auth-session';
 
 const defaultFormState = {
   id: '',
@@ -59,7 +60,6 @@ const defaultFormState = {
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL?.trim();
 const supabaseKey = process.env.REACT_APP_SUPABASE_ANON_KEY?.trim();
 const supabaseTable = process.env.REACT_APP_SUPABASE_TABLE?.trim() || 'portfolio_posts';
-const adminAccessKey = process.env.REACT_APP_ADMIN_ACCESS_KEY?.trim() || '';
 const supabaseReady = Boolean(supabaseUrl && supabaseKey);
 
 const cloneSeedPosts = () => [...publicationsSeed, ...blogSeed].map((post) => ({ ...post }));
@@ -81,6 +81,37 @@ const asTagString = (tags) => (Array.isArray(tags) ? tags.join(', ') : String(ta
 const getPostBadgeLabel = (post) => String(post?.badgeLabel || '').trim() || (post?.postType === 'publication' ? 'Research' : 'Note');
 
 const safeMarkdownText = (value) => String(value || '').trim();
+
+const readStoredAuthSession = () => {
+  try {
+    const storedSession = window.localStorage.getItem(LOCAL_STORAGE_AUTH_SESSION);
+    return storedSession ? JSON.parse(storedSession) : null;
+  } catch {
+    return null;
+  }
+};
+
+const writeStoredAuthSession = (session) => {
+  window.localStorage.setItem(LOCAL_STORAGE_AUTH_SESSION, JSON.stringify(session));
+};
+
+const clearStoredAuthSession = () => {
+  window.localStorage.removeItem(LOCAL_STORAGE_AUTH_SESSION);
+};
+
+const normalizeRemotePost = (post) => ({
+  ...post,
+  tags: Array.isArray(post.tags) ? post.tags : normalizeTags(post.tags),
+  coverImage: post.coverImage || post.cover_image || '',
+  postType: post.postType || post.post_type || 'blog',
+  readingMinutes: post.readingMinutes || post.reading_minutes || 1,
+  summary: post.summary || post.excerpt || '',
+  externalUrl: post.externalUrl || post.external_url || '',
+  badgeLabel: post.badgeLabel || post.badge_label || '',
+  title: post.title || 'Untitled post',
+  id: post.id || post.slug || slugify(post.title),
+  slug: post.slug || slugify(post.title),
+});
 
 function renderInline(text) {
   const tokens = [];
@@ -377,7 +408,7 @@ function ReaderModal({ post, show, onHide, onCopy }) {
   );
 }
 
-function PrivateLoginModal({ show, onHide, onSubmit, secretValue, onSecretChange, errorMessage, configured }) {
+function PrivateLoginModal({ show, onHide, onSubmit, emailValue, passwordValue, onEmailChange, onPasswordChange, errorMessage, configured, loading }) {
   return (
     <Modal show={show} onHide={onHide} centered className="reader-modal">
       <Modal.Header closeButton>
@@ -387,18 +418,25 @@ function PrivateLoginModal({ show, onHide, onSubmit, secretValue, onSecretChange
         <div className="studio-locked">
           <p className="editor-note mb-0">
             {configured
-              ? 'Enter the private access key to unlock editing. Production deployments should pair this with Supabase Auth and RLS.'
-              : 'Define REACT_APP_ADMIN_ACCESS_KEY to enable the private editor flow.'}
+              ? 'Sign in with your Supabase account to unlock editing on any device. The editor only works for accounts added as admins in Supabase.'
+              : 'Define REACT_APP_SUPABASE_URL and REACT_APP_SUPABASE_ANON_KEY to enable the private editor flow.'}
           </p>
           <Form className="auth-row" onSubmit={onSubmit}>
             <Form.Control
+              type="email"
+              placeholder="Email address"
+              value={emailValue}
+              onChange={(event) => onEmailChange(event.target.value)}
+              autoComplete="username"
+            />
+            <Form.Control
               type="password"
-              placeholder="Access key"
-              value={secretValue}
-              onChange={(event) => onSecretChange(event.target.value)}
+              placeholder="Password"
+              value={passwordValue}
+              onChange={(event) => onPasswordChange(event.target.value)}
               autoComplete="current-password"
             />
-            <button type="submit" className="solid-button">
+            <button type="submit" className="solid-button" disabled={loading}>
               <FaUnlock /> Unlock studio
             </button>
           </Form>
@@ -411,13 +449,15 @@ function PrivateLoginModal({ show, onHide, onSubmit, secretValue, onSecretChange
 
 function PortfolioPage() {
   const [theme, setTheme] = useState(() => window.localStorage.getItem(LOCAL_STORAGE_THEME) || 'light');
-  const [adminUnlocked, setAdminUnlocked] = useState(() => window.localStorage.getItem(LOCAL_STORAGE_UNLOCKED) === 'true');
-  const [unlockValue, setUnlockValue] = useState('');
+  const [adminUnlocked, setAdminUnlocked] = useState(false);
+  const [authSession, setAuthSession] = useState(() => readStoredAuthSession());
+  const [authReady, setAuthReady] = useState(() => !supabaseReady);
+  const [unlockEmail, setUnlockEmail] = useState('');
+  const [unlockPassword, setUnlockPassword] = useState('');
+  const [unlockLoading, setUnlockLoading] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [posts, setPosts] = useState(() => {
-    const storedPosts = window.localStorage.getItem(LOCAL_STORAGE_POSTS);
-    return storedPosts ? JSON.parse(storedPosts) : cloneSeedPosts();
-  });
+  const [posts, setPosts] = useState(() => cloneSeedPosts());
+  const [contentSourceResolved, setContentSourceResolved] = useState(() => !supabaseReady);
   const [activeFeed, setActiveFeed] = useState('all');
   const [selectedPost, setSelectedPost] = useState(null);
   const [editingPostId, setEditingPostId] = useState(null);
@@ -436,12 +476,93 @@ function PortfolioPage() {
   }, []);
 
   useEffect(() => {
+    if (!contentSourceResolved) {
+      return;
+    }
+
     window.localStorage.setItem(LOCAL_STORAGE_POSTS, JSON.stringify(posts));
-  }, [posts]);
+  }, [posts, contentSourceResolved]);
 
   useEffect(() => {
     window.localStorage.setItem(LOCAL_STORAGE_UNLOCKED, String(adminUnlocked));
   }, [adminUnlocked]);
+
+  useEffect(() => {
+    if (!supabaseReady) {
+      return undefined;
+    }
+
+    let cancelled = false;
+
+    const validateStoredSession = async () => {
+      const storedSession = readStoredAuthSession();
+
+      if (!storedSession?.access_token) {
+        if (!cancelled) {
+          setAuthSession(null);
+          setAdminUnlocked(false);
+          setAuthReady(true);
+        }
+        return;
+      }
+
+      try {
+        const userResponse = await fetch(`${supabaseUrl}/auth/v1/user`, {
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${storedSession.access_token}`,
+            Accept: 'application/json',
+          },
+        });
+
+        if (!userResponse.ok) {
+          throw new Error('Session validation failed');
+        }
+
+        const user = await userResponse.json();
+        const adminResponse = await fetch(
+          `${supabaseUrl}/rest/v1/portfolio_admins?select=user_id&user_id=eq.${encodeURIComponent(user.id)}`,
+          {
+            headers: {
+              apikey: supabaseKey,
+              Authorization: `Bearer ${storedSession.access_token}`,
+              Accept: 'application/json',
+            },
+          },
+        );
+
+        if (!adminResponse.ok) {
+          throw new Error('Admin lookup failed');
+        }
+
+        const adminRows = await adminResponse.json();
+        if (!Array.isArray(adminRows) || adminRows.length === 0) {
+          throw new Error('Not an admin');
+        }
+
+        if (!cancelled) {
+          const validatedSession = { ...storedSession, user };
+          writeStoredAuthSession(validatedSession);
+          setAuthSession(validatedSession);
+          setAdminUnlocked(true);
+          setAuthReady(true);
+        }
+      } catch {
+        clearStoredAuthSession();
+        if (!cancelled) {
+          setAuthSession(null);
+          setAdminUnlocked(false);
+          setAuthReady(true);
+        }
+      }
+    };
+
+    void validateStoredSession();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   useEffect(() => {
     if (!window.location.hash) {
@@ -459,7 +580,22 @@ function PortfolioPage() {
 
   useEffect(() => {
     const remoteLoader = async () => {
+      if (!supabaseReady || !authReady) {
+        return;
+      }
+
+      const accessToken = authSession?.access_token;
+
       if (!supabaseReady) {
+        const storedPosts = window.localStorage.getItem(LOCAL_STORAGE_POSTS);
+        if (storedPosts) {
+          try {
+            setPosts(JSON.parse(storedPosts));
+          } catch {
+            setPosts(cloneSeedPosts());
+          }
+        }
+        setContentSourceResolved(true);
         return;
       }
 
@@ -467,40 +603,58 @@ function PortfolioPage() {
         const response = await fetch(`${supabaseUrl}/rest/v1/${supabaseTable}?select=*&order=published_at.desc`, {
           headers: {
             apikey: supabaseKey,
-            Authorization: `Bearer ${supabaseKey}`,
+            ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
             Accept: 'application/json',
           },
         });
 
         if (!response.ok) {
+          const storedPosts = window.localStorage.getItem(LOCAL_STORAGE_POSTS);
+          if (storedPosts) {
+            try {
+              setPosts(JSON.parse(storedPosts));
+            } catch {
+              setPosts(cloneSeedPosts());
+            }
+          }
+          setContentSourceResolved(true);
           return;
         }
 
         const remotePosts = await response.json();
         if (Array.isArray(remotePosts) && remotePosts.length > 0) {
-          setPosts(
-            remotePosts.map((post) => ({
-              ...post,
-              tags: Array.isArray(post.tags) ? post.tags : normalizeTags(post.tags),
-              coverImage: post.coverImage || post.cover_image || '',
-              postType: post.postType || post.post_type || 'blog',
-              readingMinutes: post.readingMinutes || post.reading_minutes || 1,
-              summary: post.summary || post.excerpt || '',
-              externalUrl: post.externalUrl || post.external_url || '',
-              badgeLabel: post.badgeLabel || post.badge_label || '',
-              title: post.title || 'Untitled post',
-              id: post.id || post.slug || slugify(post.title),
-              slug: post.slug || slugify(post.title),
-            })),
-          );
+          const normalizedRemotePosts = remotePosts.map(normalizeRemotePost);
+          setPosts(normalizedRemotePosts);
+          window.localStorage.setItem(LOCAL_STORAGE_POSTS, JSON.stringify(normalizedRemotePosts));
+          setContentSourceResolved(true);
+          return;
         }
+
+        const storedPosts = window.localStorage.getItem(LOCAL_STORAGE_POSTS);
+        if (storedPosts) {
+          try {
+            setPosts(JSON.parse(storedPosts));
+          } catch {
+            setPosts(cloneSeedPosts());
+          }
+        }
+        setContentSourceResolved(true);
       } catch {
+        const storedPosts = window.localStorage.getItem(LOCAL_STORAGE_POSTS);
+        if (storedPosts) {
+          try {
+            setPosts(JSON.parse(storedPosts));
+          } catch {
+            setPosts(cloneSeedPosts());
+          }
+        }
+        setContentSourceResolved(true);
         return undefined;
       }
     };
 
     void remoteLoader();
-  }, []);
+  }, [authReady, authSession]);
 
   const visiblePosts = useMemo(() => {
     return posts
@@ -513,21 +667,106 @@ function PortfolioPage() {
 
   const handleThemeToggle = () => setTheme((currentTheme) => (currentTheme === 'dark' ? 'light' : 'dark'));
 
-  const handleUnlock = () => {
-    if (adminAccessKey && unlockValue.trim() !== adminAccessKey) {
-      setLoginError('Access code is not valid.');
+  const handleUnlock = async (event) => {
+    event.preventDefault();
+
+    if (!supabaseReady) {
+      setLoginError('Supabase is not configured yet.');
       return;
     }
 
-    setAdminUnlocked(true);
-    setShowLoginModal(false);
+    const email = unlockEmail.trim();
+    if (!email || !unlockPassword.trim()) {
+      setLoginError('Enter your email and password.');
+      return;
+    }
+
+    setUnlockLoading(true);
     setLoginError('');
-    setStatusMessage('Private studio unlocked.');
+
+    try {
+      const signInResponse = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
+        method: 'POST',
+        headers: {
+          apikey: supabaseKey,
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password: unlockPassword,
+        }),
+      });
+
+      if (!signInResponse.ok) {
+        throw new Error('Sign-in failed');
+      }
+
+      const session = await signInResponse.json();
+      const sessionToken = session.access_token;
+
+      const userResponse = await fetch(`${supabaseUrl}/auth/v1/user`, {
+        headers: {
+          apikey: supabaseKey,
+          Authorization: `Bearer ${sessionToken}`, 
+          Accept: 'application/json',
+        },
+      });
+
+      if (!userResponse.ok) {
+        throw new Error('Unable to read signed-in user');
+      }
+
+      const user = await userResponse.json();
+
+      const adminResponse = await fetch(
+        `${supabaseUrl}/rest/v1/portfolio_admins?select=user_id&user_id=eq.${encodeURIComponent(user.id)}`,
+        {
+          headers: {
+            apikey: supabaseKey,
+            Authorization: `Bearer ${sessionToken}`,
+            Accept: 'application/json',
+          },
+        },
+      );
+
+      if (!adminResponse.ok) {
+        throw new Error('Admin verification failed');
+      }
+
+      const adminRows = await adminResponse.json();
+      if (!Array.isArray(adminRows) || adminRows.length === 0) {
+        throw new Error('This account is not registered as an admin.');
+      }
+
+      const validatedSession = {
+        ...session,
+        user,
+      };
+
+      writeStoredAuthSession(validatedSession);
+      setAuthSession(validatedSession);
+      setAdminUnlocked(true);
+      setShowLoginModal(false);
+      setUnlockEmail('');
+      setUnlockPassword('');
+      setStatusMessage('Signed in to private studio.');
+    } catch {
+      clearStoredAuthSession();
+      setAuthSession(null);
+      setAdminUnlocked(false);
+      setLoginError('Unable to sign in. Make sure this Supabase account is added to portfolio_admins.');
+    } finally {
+      setUnlockLoading(false);
+    }
   };
 
   const handleLogout = () => {
+    clearStoredAuthSession();
+    setAuthSession(null);
     setAdminUnlocked(false);
-    setUnlockValue('');
+    setUnlockEmail('');
+    setUnlockPassword('');
     setShowLoginModal(false);
     setStatusMessage('Private studio locked.');
   };
@@ -636,11 +875,16 @@ function PortfolioPage() {
       return;
     }
 
+    const accessToken = authSession?.access_token;
+    if (!accessToken) {
+      throw new Error('Missing admin session');
+    }
+
     const response = await fetch(`${supabaseUrl}/rest/v1/${supabaseTable}?on_conflict=id`, {
       method: 'POST',
       headers: {
         apikey: supabaseKey,
-        Authorization: `Bearer ${supabaseKey}`,
+        Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
         Prefer: 'resolution=merge-duplicates,return=representation',
       },
@@ -719,11 +963,16 @@ function PortfolioPage() {
 
     if (supabaseReady) {
       try {
+        const accessToken = authSession?.access_token;
+        if (!accessToken) {
+          throw new Error('Missing admin session');
+        }
+
         await fetch(`${supabaseUrl}/rest/v1/${supabaseTable}?id=eq.${id}`, {
           method: 'DELETE',
           headers: {
             apikey: supabaseKey,
-            Authorization: `Bearer ${supabaseKey}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
       } catch {
@@ -1240,14 +1489,14 @@ function PortfolioPage() {
       <PrivateLoginModal
         show={showLoginModal}
         onHide={() => setShowLoginModal(false)}
-        onSubmit={(event) => {
-          event.preventDefault();
-          handleUnlock();
-        }}
-        secretValue={unlockValue}
-        onSecretChange={setUnlockValue}
+        onSubmit={handleUnlock}
+        emailValue={unlockEmail}
+        passwordValue={unlockPassword}
+        onEmailChange={setUnlockEmail}
+        onPasswordChange={setUnlockPassword}
         errorMessage={loginError}
-        configured={Boolean(adminAccessKey)}
+        configured={supabaseReady}
+        loading={unlockLoading}
       />
     </div>
   );
