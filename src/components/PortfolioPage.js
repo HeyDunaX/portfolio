@@ -300,7 +300,7 @@ function PublicationCard({ post, onOpen, onEdit, onRemove, onCopy, adminUnlocked
           </div>
           <div className="tag-list">
             {tagList.map((tag) => (
-              <Badge key={tag} className="tag-pill">
+              <Badge key={tag} className="tag-pill" bg="transparent">
                 {tag}
               </Badge>
             ))}
@@ -867,7 +867,7 @@ function PortfolioPage() {
               copy="Use this section to draft posts, attach images, and write in markdown. In production, pair this interface with Supabase Auth and row-level security so only you can access the editor."
             />
             <div className="studio-grid">
-              <div className="panel-card p-0 border-0 shadow-none">
+              <div className="panel-card studio-feed-panel border-0 shadow-none">
                 <div className="publication-toolbar">
                   <div>
                     <h3 className="mb-1">Live feed</h3>
