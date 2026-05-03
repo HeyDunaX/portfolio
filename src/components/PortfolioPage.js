@@ -699,7 +699,15 @@ function PortfolioPage() {
       });
 
       if (!signInResponse.ok) {
-        throw new Error('Sign-in failed');
+        let errorMessage = 'Sign-in failed.';
+        try {
+          const errorBody = await signInResponse.json();
+          errorMessage = errorBody.error_description || errorBody.msg || errorBody.message || errorMessage;
+        } catch {
+          // Keep the fallback message when Supabase does not return JSON.
+        }
+
+        throw new Error(errorMessage);
       }
 
       const session = await signInResponse.json();
@@ -751,11 +759,11 @@ function PortfolioPage() {
       setUnlockEmail('');
       setUnlockPassword('');
       setStatusMessage('Signed in to private studio.');
-    } catch {
+    } catch (error) {
       clearStoredAuthSession();
       setAuthSession(null);
       setAdminUnlocked(false);
-      setLoginError('Unable to sign in. Make sure this Supabase account is added to portfolio_admins.');
+      setLoginError(error instanceof Error ? error.message : 'Unable to sign in.');
     } finally {
       setUnlockLoading(false);
     }
