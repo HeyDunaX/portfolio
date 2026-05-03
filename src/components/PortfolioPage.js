@@ -13,6 +13,8 @@ import {
   FaInstagram,
   FaMoon,
   FaPlus,
+  FaRegStar,
+  FaShareAlt,
   FaSun,
   FaSyncAlt,
   FaTiktok,
@@ -267,29 +269,30 @@ function PublicationCard({ post, onOpen, onEdit, onRemove, onCopy, adminUnlocked
     <article className="publication-card" id={`post-${post.slug}`}>
       <div className="publication-year">
         <span className="year-pill">{post.year}</span>
-        <small>{post.postType === 'publication' ? 'Publication' : 'Blog'}</small>
+        <span className="status-pill">{post.postType === 'publication' ? 'Research' : 'Note'}</span>
       </div>
       <div className="publication-body">
         <div className="publication-toolbar">
           <div>
-            <h3>{post.title}</h3>
-            <p>{post.venue}</p>
+            <h3 className="publication-title">{post.title}</h3>
+            <p className="publication-venue">{post.venue}</p>
           </div>
           <div className="card-footer-row">
             {post.externalUrl && post.externalUrl !== '#' ? (
               <a href={post.externalUrl} className="muted-link" target="_blank" rel="noreferrer">
-                Open source <FaExternalLinkAlt />
+                <FaExternalLinkAlt />
+                <span className="visually-hidden">Open source</span>
               </a>
             ) : null}
-            <button type="button" className="copy-link" onClick={() => onCopy(post)}>
-              <FaCopy /> Share
+            <button type="button" className="icon-button" onClick={() => onCopy(post)} aria-label="Copy share link">
+              <FaShareAlt />
             </button>
             <button type="button" className="text-button" onClick={() => onOpen(post)}>
               Read <FaArrowRight />
             </button>
           </div>
         </div>
-        <p>{post.summary}</p>
+        <p className="publication-summary">{post.summary}</p>
         <div className="publication-footer">
           <div className="post-meta-row">
             <span className="meta-pill"><strong>{post.authors}</strong></span>
@@ -297,7 +300,7 @@ function PublicationCard({ post, onOpen, onEdit, onRemove, onCopy, adminUnlocked
           </div>
           <div className="tag-list">
             {tagList.map((tag) => (
-              <Badge key={tag} className="tag-pill" bg="transparent" text="dark">
+              <Badge key={tag} className="tag-pill">
                 {tag}
               </Badge>
             ))}
@@ -667,7 +670,9 @@ function PortfolioPage() {
         <Navbar expand="lg" className="site-navbar" collapseOnSelect>
           <Container fluid="lg">
             <Navbar.Brand href="#home" className="site-brand">
-              <span className="brand-mark"><FaBookOpen /></span>
+              <span className="brand-mark brand-logo-shell">
+                <img src={`${process.env.PUBLIC_URL}/logo192.png`} alt="Portfolio logo" className="brand-logo" />
+              </span>
               <span className="brand-copy">
                 <strong>Duy Nhan</strong>
                 <span>AI researcher portfolio</span>
@@ -814,13 +819,16 @@ function PortfolioPage() {
                 <article className="post-spotlight">
                   <div className="d-flex flex-wrap justify-content-between gap-3 align-items-start">
                     <div>
-                      <span className="eyebrow">Featured</span>
-                      <h3 className="mt-3">{featuredPublication.title}</h3>
-                      <p className="mb-2">{featuredPublication.summary}</p>
+                      <span className="eyebrow">
+                        <FaRegStar />
+                        <span>Featured research</span>
+                      </span>
+                      <h3 className="mt-3 publication-title">{featuredPublication.title}</h3>
+                      <p className="mb-2 publication-summary">{featuredPublication.summary}</p>
                     </div>
                     <div className="card-footer-row">
-                      <button type="button" className="copy-link" onClick={() => handleCopyLink(featuredPublication)}>
-                        <FaCopy /> Share
+                      <button type="button" className="icon-button" onClick={() => handleCopyLink(featuredPublication)} aria-label="Copy featured share link">
+                        <FaShareAlt />
                       </button>
                       <button type="button" className="outline-button" onClick={() => handleOpenPost(featuredPublication)}>
                         Read <FaArrowRight />
@@ -879,14 +887,14 @@ function PortfolioPage() {
                       ) : null}
                       <div className="post-meta-row">
                         <span className="year-pill">{post.year}</span>
-                        <span className="status-pill">{post.postType}</span>
+                        <span className="status-pill">{post.postType === 'publication' ? 'Research' : 'Note'}</span>
                         <span className="status-pill">{post.status}</span>
                       </div>
-                      <h3>{post.title}</h3>
-                      <p className="post-excerpt">{post.summary}</p>
+                      <h3 className="publication-title">{post.title}</h3>
+                      <p className="post-excerpt publication-summary">{post.summary}</p>
                       <div className="post-footer">
-                        <button type="button" className="copy-link" onClick={() => handleCopyLink(post)}>
-                          <FaCopy /> Share
+                        <button type="button" className="icon-button" onClick={() => handleCopyLink(post)} aria-label="Copy share link">
+                          <FaShareAlt />
                         </button>
                         <button type="button" className="outline-button" onClick={() => handleOpenPost(post)}>
                           Read article <FaBookOpen />
@@ -1125,13 +1133,19 @@ function PortfolioPage() {
               {awards.map((award) => (
                 <div className="grid-span-6" key={`${award.year}-${award.title}`}>
                   <article className="award-card">
-                    <div className="award-icon" style={{ color: award.color, borderColor: award.color }}>
-                      <FaClipboard />
-                    </div>
+                    {(() => {
+                      const AwardIcon = award.icon;
+
+                      return (
+                        <div className="award-icon" style={{ color: award.color, borderColor: award.color }}>
+                          <AwardIcon />
+                        </div>
+                      );
+                    })()}
                     <div>
                       <span className="year-pill">{award.year}</span>
-                      <h3 className="mt-3">{award.title}</h3>
-                      <p className="mb-0">{award.category}</p>
+                      <h3 className="mt-3 publication-title">{award.title}</h3>
+                      <p className="mb-0 publication-summary">{award.category}</p>
                     </div>
                   </article>
                 </div>

@@ -1,5 +1,6 @@
 import avatarImage from '../assets/avatar.png';
 import blogCoverImage from '../assets/thumbnail1.jpg';
+import { FaAward, FaMedal, FaTrophy } from 'react-icons/fa';
 
 export const brandName = 'The AI workspace that works for you.';
 
@@ -11,25 +12,25 @@ export const socialLinks = [
 ];
 
 export const heroStats = [
-  { label: 'Current status', value: 'First-year student', detail: 'Posts and Telecommunications Institute of Technology (PTIT)' },
-  { label: 'Research role', value: 'Research assistant', detail: 'URA Research Group, Ho Chi Minh City University of Technology (HCMUT)' },
-  { label: 'Focus area', value: 'AI researcher', detail: 'Low-resource NLP, writing, and research communication' },
+  { label: 'Academic status', value: 'Year 1 student', detail: 'Posts and Telecommunications Institute of Technology (PTIT)' },
+  { label: 'Research appointment', value: 'Research assistant', detail: 'URA Research Group, Ho Chi Minh City University of Technology (HCMUT)' },
+  { label: 'Research focus', value: 'AI researcher', detail: 'Low-resource NLP, scientific writing, and research communication' },
 ];
 
 export const researchHighlights = [
   {
-    title: 'Low-resource neural machine translation',
-    copy: 'I study how data augmentation, typology, and multilingual adaptation affect translation quality in under-resourced languages.',
-    label: 'NLP',
+    title: 'Low-resource machine translation',
+    copy: 'I study how data augmentation, typology, and multilingual adaptation affect translation quality in low-resource language settings.',
+    label: 'NLP Research',
   },
   {
-    title: 'Research-first product thinking',
-    copy: 'I organize work so findings can move from experiments into a clear, readable, and reusable system.',
+    title: 'Evidence-driven research workflow',
+    copy: 'I organize work so findings move from experiments into a clear, readable, and reusable system.',
     label: 'Workflow',
   },
   {
-    title: 'Writing and publication support',
-    copy: 'I keep the writing stack simple: structured markdown, editable media, and a publication flow that is easy to maintain.',
+    title: 'Scientific writing and publishing',
+    copy: 'I keep the writing stack structured: markdown content, editable media, and a publication flow that is easy to maintain.',
     label: 'Publishing',
   },
 ];
@@ -44,7 +45,7 @@ export const publicationsSeed = [
     venue: 'AAAI 2026 Workshop LM4UC, Singapore',
     title: 'Not All Data Augmentation Works: A Typology-Aware Study for Low-Resource Neural Machine Translation in Vietnamese Ethnic Minority Languages',
     authors: 'Long Nguyen, Dat T. Truong, Nhan D. Tran, Quynh Vo, Quy Tran Nguyen, Tho Quan',
-    summary: 'A systematic study of data augmentation for Tày–Vietnamese and Bahnar–Vietnamese machine translation, with typology-aware analysis and new bilingual resources.',
+    summary: 'A typology-aware study of data augmentation for Tày–Vietnamese and Bahnar–Vietnamese machine translation, with new bilingual resources.',
     content: `## Abstract
 
 Neural machine translation for low-resource and underserved languages remains constrained by limited parallel corpora, weak linguistic tooling, and small evaluation sets. This work studies data augmentation across two Vietnamese minority-language pairs, Tày–Vietnamese and Bahnar–Vietnamese, using a three-stage pipeline of Vietnamese-based initialization, monolingual adaptation, and supervised fine-tuning.
@@ -69,7 +70,7 @@ Neural machine translation for low-resource and underserved languages remains co
     venue: 'Main track',
     title: 'Anonymous',
     authors: 'Anonymous',
-    summary: 'Draft slot reserved for an upcoming main-track submission.',
+    summary: 'Reserved draft slot for an upcoming main-track submission.',
     content: '## Abstract\n\nAbstract to be added.',
     tags: ['Low-resource NLP', 'Linguistics'],
     coverImage: avatarImage,
@@ -85,7 +86,7 @@ Neural machine translation for low-resource and underserved languages remains co
     venue: 'Research archive',
     title: 'Extra Paper 1',
     authors: 'Author A',
-    summary: 'Research placeholder card for the publication feed.',
+    summary: 'Placeholder publication card for the research feed.',
     content: 'Short note for the publication list.',
     tags: ['AI'],
     coverImage: avatarImage,
@@ -101,7 +102,7 @@ Neural machine translation for low-resource and underserved languages remains co
     venue: 'Research archive',
     title: 'Extra Paper 2',
     authors: 'Author B',
-    summary: 'Second placeholder card for layout testing.',
+    summary: 'Second placeholder publication card used for layout validation.',
     content: 'Short note for the publication list.',
     tags: ['ML'],
     coverImage: avatarImage,
@@ -118,7 +119,7 @@ export const blogSeed = [
     featured: true,
     year: '2024',
     venue: 'Press coverage',
-    title: 'HCMC Youth Innovation Festival',
+    title: 'Coverage: HCMC Youth Innovation Festival',
     authors: 'Duy Nhan',
     summary: 'A public-facing article card that can be edited from the private studio.',
     content: `## Event note
@@ -137,18 +138,18 @@ It demonstrates how publications and blog content can live in one editable, shar
 ];
 
 export const awards = [
-  { year: '2025', title: 'Encouragement Prize, 31st National Youth Informatics Competition', category: 'National', color: '#1857ff' },
-  { year: '2025', title: 'First Prize, Southern Regional Youth Informatics Competition', category: 'Regional', color: '#0f8a5f' },
-  { year: '2025', title: 'Second Prize, City Youth Informatics Competition', category: 'City', color: '#a36d00' },
-  { year: '2024–2025', title: 'Second Prize, City Scientific Research Competition, system software category', category: 'Research', color: '#1857ff' },
-  { year: '2025', title: 'Bronze Medal, 13th Design, Fabrication, and Application Contest', category: 'Technical', color: '#a36d00' },
-  { year: '2025', title: 'Second Prize, HSU Programming Challenge', category: 'Programming', color: '#1857ff' },
-  { year: '2023–2024', title: 'Second Prize, City Scientific Research Competition, system software category', category: 'Research', color: '#1857ff' },
-  { year: '2024', title: 'Encouragement Prize, City Youth Informatics Competition', category: 'City', color: '#6f6b64' },
-  { year: '2024', title: 'Encouragement Prize, AI Creativity Challenge at the Space Science Day', category: 'AI', color: '#6f6b64' },
-  { year: '2024', title: 'Encouragement Prize, Markethon Competition', category: 'Business', color: '#6f6b64' },
-  { year: '2023', title: 'Bronze Medal, 11th Design, Fabrication, and Application Contest', category: 'Technical', color: '#a36d00' },
-  { year: '2023', title: 'Encouragement Prize, 18th Youth and Children Creativity Contest', category: 'Creative', color: '#6f6b64' },
+  { year: '2025', title: 'Encouragement Prize, 31st National Youth Informatics Competition', category: 'National', color: '#1857ff', icon: FaAward },
+  { year: '2025', title: 'First Prize, Southern Regional Youth Informatics Competition', category: 'Regional', color: '#0f8a5f', icon: FaTrophy },
+  { year: '2025', title: 'Second Prize, City Youth Informatics Competition', category: 'City', color: '#a36d00', icon: FaMedal },
+  { year: '2024–2025', title: 'Second Prize, City Scientific Research Competition, System Software Category', category: 'Research', color: '#1857ff', icon: FaMedal },
+  { year: '2025', title: 'Bronze Medal, 13th Design, Fabrication, and Application Contest', category: 'Technical', color: '#a36d00', icon: FaMedal },
+  { year: '2025', title: 'Second Prize, HSU Programming Challenge', category: 'Programming', color: '#1857ff', icon: FaMedal },
+  { year: '2023–2024', title: 'Second Prize, City Scientific Research Competition, System Software Category', category: 'Research', color: '#1857ff', icon: FaMedal },
+  { year: '2024', title: 'Encouragement Prize, City Youth Informatics Competition', category: 'City', color: '#6f6b64', icon: FaAward },
+  { year: '2024', title: 'Encouragement Prize, AI Creativity Challenge at the Space Science Day', category: 'AI', color: '#6f6b64', icon: FaAward },
+  { year: '2024', title: 'Encouragement Prize, Markethon Competition', category: 'Business', color: '#6f6b64', icon: FaAward },
+  { year: '2023', title: 'Bronze Medal, 11th Design, Fabrication, and Application Contest', category: 'Technical', color: '#a36d00', icon: FaMedal },
+  { year: '2023', title: 'Encouragement Prize, 18th Youth and Children Creativity Contest', category: 'Creative', color: '#6f6b64', icon: FaAward },
 ];
 
 export const profileImage = avatarImage;

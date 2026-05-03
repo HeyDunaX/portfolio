@@ -22,6 +22,13 @@
   --radius-md: 20px;
   --radius-lg: 28px;
   --radius-pill: 9999px;
+  --font-xs: 0.875rem;
+  --font-sm: 0.9375rem;
+  --font-md: 1rem;
+  --font-lg: 1.125rem;
+  --font-xl: 1.375rem;
+  --font-2xl: 1.75rem;
+  --font-3xl: clamp(2.2rem, 5vw, 4.2rem);
 }
 
 [data-theme='dark'] {
@@ -53,6 +60,8 @@
     radial-gradient(circle at 90% 10%, rgba(24, 87, 255, 0.1), transparent 18%),
     var(--page-bg);
   color: var(--text-primary);
+  font-size: var(--font-md);
+  line-height: 1.65;
 }
 
 .page-shell {
@@ -96,14 +105,26 @@
 }
 
 .brand-mark {
-  width: 2.35rem;
-  height: 2.35rem;
+  width: 2.5rem;
+  height: 2.5rem;
   display: grid;
   place-items: center;
   border-radius: 14px;
   background: linear-gradient(135deg, var(--accent), var(--accent-strong));
   color: var(--text-inverse);
   box-shadow: var(--shadow-card);
+}
+
+.brand-logo-shell {
+  padding: 0.2rem;
+  overflow: hidden;
+}
+
+.brand-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .brand-copy {
@@ -125,8 +146,8 @@
 .site-nav .nav-link {
   color: var(--text-secondary);
   font-weight: 600;
-  font-size: 0.95rem;
-  padding: 0.75rem 0.95rem;
+  font-size: var(--font-sm);
+  padding: 0.7rem 0.9rem;
   border-radius: var(--radius-pill);
 }
 
@@ -193,8 +214,9 @@
   display: inline-flex;
   align-items: center;
   gap: 0.55rem;
-  padding: 0.7rem 1rem;
+  padding: 0.72rem 1rem;
   font-weight: 600;
+  font-size: var(--font-sm);
 }
 
 .hero-section,
@@ -220,7 +242,7 @@
   border: 1px solid var(--page-border);
   background: var(--page-surface);
   color: var(--text-tertiary);
-  font-size: 0.8rem;
+  font-size: var(--font-xs);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -228,17 +250,17 @@
 
 .hero-title {
   margin: 1rem 0 1rem;
-  font-size: clamp(3rem, 6vw, 5.4rem);
-  line-height: 0.96;
-  letter-spacing: -0.06em;
+  font-size: var(--font-3xl);
+  line-height: 0.98;
+  letter-spacing: -0.05em;
   font-weight: 800;
 }
 
 .hero-lead {
-  max-width: 42rem;
+  max-width: 40rem;
   color: var(--text-secondary);
-  font-size: 1.04rem;
-  line-height: 1.75;
+  font-size: var(--font-md);
+  line-height: 1.72;
 }
 
 .hero-grid {
@@ -537,8 +559,9 @@
 }
 
 .section-title {
-  font-size: clamp(2rem, 4vw, 3rem);
-  letter-spacing: -0.05em;
+  font-size: var(--font-2xl);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
   margin: 0 0 0.7rem;
 }
 
@@ -595,6 +618,36 @@
   box-shadow: var(--shadow-card);
 }
 
+.publication-title {
+  font-size: var(--font-lg);
+  line-height: 1.35;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.35rem;
+  overflow-wrap: anywhere;
+  line-clamp: 2;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.publication-venue,
+.publication-summary,
+.post-excerpt {
+  font-size: var(--font-sm);
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.publication-summary,
+.post-excerpt {
+  display: -webkit-box;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .publication-card:hover,
 .post-card:hover,
 .award-card:hover,
@@ -622,7 +675,7 @@
 .publication-year small {
   color: var(--text-tertiary);
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
@@ -648,6 +701,23 @@
 .tag-pill {
   background: var(--page-surface-muted);
   color: var(--text-secondary);
+}
+
+.icon-button {
+  width: 2.6rem;
+  height: 2.6rem;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid var(--page-border);
+  background: var(--page-surface);
+  color: var(--text-primary);
+  border-radius: 50%;
+}
+
+.icon-button:hover,
+.icon-button:focus-visible {
+  background: var(--accent-soft);
+  color: var(--accent);
 }
 
 .muted-link {
@@ -917,6 +987,11 @@
   filter: var(--text-primary) brightness(0) invert(0.7);
 }
 
+.award-card .publication-title,
+.award-card .publication-summary {
+  max-width: 100%;
+}
+
 .kbd-hint {
   display: inline-flex;
   align-items: center;
@@ -950,11 +1025,11 @@
 
 @media (max-width: 767.98px) {
   .section-title {
-    font-size: 1.9rem;
+    font-size: 1.6rem;
   }
 
   .hero-title {
-    font-size: clamp(2.4rem, 14vw, 4rem);
+    font-size: clamp(2.2rem, 11vw, 3.4rem);
   }
 
   .publication-toolbar,
@@ -989,5 +1064,15 @@
     position: static;
     margin-top: 1rem;
     max-width: none;
+  }
+
+  .publication-title {
+    font-size: 1rem;
+  }
+
+  .publication-summary,
+  .publication-venue,
+  .post-excerpt {
+    font-size: 0.9rem;
   }
 }
