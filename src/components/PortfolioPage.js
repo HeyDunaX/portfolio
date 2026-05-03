@@ -684,7 +684,7 @@ function PortfolioPage() {
                 <Nav.Link href="#home">Home</Nav.Link>
                 <Nav.Link href="#research">Research</Nav.Link>
                 <Nav.Link href="#publications">Publications</Nav.Link>
-                <Nav.Link href="#studio">Studio</Nav.Link>
+                {adminUnlocked ? <Nav.Link href="#studio">Studio</Nav.Link> : null}
                 <Nav.Link href="#awards">Awards</Nav.Link>
               </Nav>
               <div className="d-flex gap-2 align-items-center ms-lg-3 mt-3 mt-lg-0">
@@ -732,9 +732,9 @@ function PortfolioPage() {
                   <a href="#publications" className="solid-button">
                     Explore publications <FaArrowRight />
                   </a>
-                  <a href="#studio" className="outline-button">
-                    Open private studio <FaClipboard />
-                  </a>
+                  <button type="button" className="outline-button" onClick={adminUnlocked ? () => window.location.assign('#studio') : openLogin}>
+                    {adminUnlocked ? 'Open private studio' : 'Private login'} <FaClipboard />
+                  </button>
                 </div>
                 <div className="social-links">
                   {socialLinks.map((social) => {
@@ -859,268 +859,238 @@ function PortfolioPage() {
           </Container>
         </section>
 
-        <section id="studio" className="content-section">
-          <Container fluid="lg">
-            <SectionHeading
-              eyebrow="Private studio"
-              title="Edit publications and blog entries directly on the site"
-              copy="Use this section to draft posts, attach images, and write in markdown. In production, pair this interface with Supabase Auth and row-level security so only you can access the editor."
-            />
-            <div className="studio-grid">
-              <div className="panel-card studio-feed-panel border-0 shadow-none">
-                <div className="publication-toolbar">
-                  <div>
-                    <h3 className="mb-1">Live feed</h3>
-                    <p className="mb-0">Published content appears here with shareable hashes.</p>
-                  </div>
-                  <button type="button" className="editor-action" onClick={() => setSelectedPost(null)}>
-                    <FaSyncAlt /> Clear reader
-                  </button>
-                </div>
-                <div className="post-list">
-                  {visiblePosts.map((post) => (
-                    <article key={`feed-${post.id}`} className="post-card">
-                      {post.coverImage ? (
-                        <button type="button" className="post-cover border-0 p-0" onClick={() => handleOpenPost(post)}>
-                          <img src={post.coverImage} alt={post.title} />
-                        </button>
-                      ) : null}
-                      <div className="post-meta-row">
-                        <span className="year-pill">{post.year}</span>
-                        <span className="status-pill">{post.postType === 'publication' ? 'Research' : 'Note'}</span>
-                        <span className="status-pill">{post.status}</span>
-                      </div>
-                      <h3 className="publication-title">{post.title}</h3>
-                      <p className="post-excerpt publication-summary">{post.summary}</p>
-                      <div className="post-footer">
-                        <button type="button" className="icon-button" onClick={() => handleCopyLink(post)} aria-label="Copy share link">
-                          <FaShareAlt />
-                        </button>
-                        <button type="button" className="outline-button" onClick={() => handleOpenPost(post)}>
-                          Read article <FaBookOpen />
-                        </button>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
-
-              <div className="editor-card">
-                <div className="studio-toolbar">
-                  <div>
-                    <h3 className="mb-1">Private editor</h3>
-                    <p className="mb-0">{supabaseReady ? 'Supabase is configured.' : 'Supabase is not configured yet.'}</p>
-                  </div>
-                  {adminUnlocked ? (
-                    <button type="button" className="editor-action" onClick={resetForm}>
-                      <FaPlus /> New post
+        {adminUnlocked ? (
+          <section id="studio" className="content-section">
+            <Container fluid="lg">
+              <SectionHeading
+                eyebrow="Private studio"
+                title="Edit publications and blog entries directly on the site"
+                copy="Use this section to draft posts, attach images, and write in markdown. In production, pair this interface with Supabase Auth and row-level security so only you can access the editor."
+              />
+              <div className="studio-grid">
+                <div className="panel-card studio-feed-panel border-0 shadow-none">
+                  <div className="publication-toolbar">
+                    <div>
+                      <h3 className="mb-1">Live feed</h3>
+                      <p className="mb-0">Published content appears here with shareable hashes.</p>
+                    </div>
+                    <button type="button" className="editor-action" onClick={() => setSelectedPost(null)}>
+                      <FaSyncAlt /> Clear reader
                     </button>
-                  ) : null}
+                  </div>
+                  <div className="post-list">
+                    {visiblePosts.map((post) => (
+                      <article key={`feed-${post.id}`} className="post-card">
+                        {post.coverImage ? (
+                          <button type="button" className="post-cover border-0 p-0" onClick={() => handleOpenPost(post)}>
+                            <img src={post.coverImage} alt={post.title} />
+                          </button>
+                        ) : null}
+                        <div className="post-meta-row">
+                          <span className="year-pill">{post.year}</span>
+                          <span className="status-pill">{post.postType === 'publication' ? 'Research' : 'Note'}</span>
+                          <span className="status-pill">{post.status}</span>
+                        </div>
+                        <h3 className="publication-title">{post.title}</h3>
+                        <p className="post-excerpt publication-summary">{post.summary}</p>
+                        <div className="post-footer">
+                          <button type="button" className="icon-button" onClick={() => handleCopyLink(post)} aria-label="Copy share link">
+                            <FaShareAlt />
+                          </button>
+                          <button type="button" className="outline-button" onClick={() => handleOpenPost(post)}>
+                            Read article <FaBookOpen />
+                          </button>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
                 </div>
-                <p className="studio-note">
-                  {supabaseReady
-                    ? 'The app will sync through Supabase REST when the required environment variables are present.'
-                    : 'Add REACT_APP_SUPABASE_URL, REACT_APP_SUPABASE_ANON_KEY, and REACT_APP_SUPABASE_TABLE to enable remote sync.'}
-                </p>
 
-                {!adminUnlocked ? (
-                  <div className="studio-locked">
-                    <p className="editor-note mb-0">Unlock the private editor with the access key to edit posts, images, and markdown content.</p>
-                    <Form
-                      className="auth-row"
-                      onSubmit={(event) => {
-                        event.preventDefault();
-                        handleUnlock();
-                      }}
-                    >
-                      <Form.Control
-                        type="password"
-                        placeholder="Access key"
-                        value={unlockValue}
-                        onChange={(event) => setUnlockValue(event.target.value)}
-                      />
-                      <button type="submit" className="solid-button">
-                        <FaUnlock /> Unlock studio
+                <div className="editor-card">
+                  <div className="studio-toolbar">
+                    <div>
+                      <h3 className="mb-1">Private editor</h3>
+                      <p className="mb-0">{supabaseReady ? 'Supabase is configured.' : 'Supabase is not configured yet.'}</p>
+                    </div>
+                    {adminUnlocked ? (
+                      <button type="button" className="editor-action" onClick={resetForm}>
+                        <FaPlus /> New post
                       </button>
-                    </Form>
-                    {statusMessage ? <p className="mb-0">{statusMessage}</p> : null}
+                    ) : null}
                   </div>
-                ) : (
-                  <div className="empty-state text-start">
-                    <h4>Private editor locked</h4>
-                    <p className="mb-3">Unlock the studio to add images, edit markdown, and publish content directly to Supabase-backed storage.</p>
-                    <button type="button" className="solid-button" onClick={openLogin}>
-                      <FaUnlock /> Open login
-                    </button>
-                  </div>
-                )}
+                  <p className="studio-note">
+                    {supabaseReady
+                      ? 'The app will sync through Supabase REST when the required environment variables are present.'
+                      : 'Add REACT_APP_SUPABASE_URL, REACT_APP_SUPABASE_ANON_KEY, and REACT_APP_SUPABASE_TABLE to enable remote sync.'}
+                  </p>
 
-                {adminUnlocked ? (
-                  <Form onSubmit={handleSave} className="studio-form mt-4">
-                    <div className="row g-3">
-                      <div className="col-12 col-md-6">
-                        <Form.Label>Post type</Form.Label>
-                        <Form.Select
-                          value={formState.postType}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, postType: event.target.value }))}
-                        >
-                          <option value="publication">Publication</option>
-                          <option value="blog">Blog</option>
-                        </Form.Select>
-                      </div>
-                      <div className="col-12 col-md-3">
-                        <Form.Label>Status</Form.Label>
-                        <Form.Select
-                          value={formState.status}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, status: event.target.value }))}
-                        >
-                          <option value="draft">Draft</option>
-                          <option value="published">Published</option>
-                        </Form.Select>
-                      </div>
-                      <div className="col-12 col-md-3">
-                        <Form.Label>Year</Form.Label>
-                        <Form.Control
-                          type="text"
-                          value={formState.year}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, year: event.target.value }))}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <Form.Label>Title</Form.Label>
-                        <Form.Control
-                          type="text"
-                          value={formState.title}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, title: event.target.value }))}
-                          placeholder="Article title"
-                        />
-                      </div>
-                      <div className="col-12">
-                        <Form.Label>Venue / source</Form.Label>
-                        <Form.Control
-                          type="text"
-                          value={formState.venue}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, venue: event.target.value }))}
-                          placeholder="Conference, workshop, or article source"
-                        />
-                      </div>
-                      <div className="col-12">
-                        <Form.Label>Authors / byline</Form.Label>
-                        <Form.Control
-                          type="text"
-                          value={formState.authors}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, authors: event.target.value }))}
-                          placeholder="Author list or byline"
-                        />
-                      </div>
-                      <div className="col-12">
-                        <Form.Label>Summary</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows={3}
-                          value={formState.summary}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, summary: event.target.value }))}
-                          placeholder="Short abstract or summary"
-                        />
-                      </div>
-                      <div className="col-12">
-                        <Form.Label>Markdown content</Form.Label>
-                        <Form.Control
-                          as="textarea"
-                          rows={12}
-                          value={formState.content}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, content: event.target.value }))}
-                          placeholder="Write in markdown"
-                          className="markdown-input"
-                        />
-                      </div>
-                      <div className="col-12 col-md-6">
-                        <Form.Label>Tags</Form.Label>
-                        <Form.Control
-                          type="text"
-                          value={formState.tags}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, tags: event.target.value }))}
-                          placeholder="Comma-separated tags"
-                        />
-                      </div>
-                      <div className="col-12 col-md-6">
-                        <Form.Label>Reading time</Form.Label>
-                        <Form.Control
-                          type="number"
-                          min="1"
-                          value={formState.readingMinutes}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, readingMinutes: event.target.value }))}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <Form.Label>External link</Form.Label>
-                        <Form.Control
-                          type="url"
-                          value={formState.externalUrl}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, externalUrl: event.target.value }))}
-                          placeholder="https://..."
-                        />
-                      </div>
-                      <div className="col-12">
-                        <Form.Label>Cover image</Form.Label>
-                        <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
-                      </div>
-                      <div className="col-12">
-                        {formState.coverImage ? (
-                          <div className="editor-preview">
-                            <img src={formState.coverImage} alt="Preview cover" className="mb-3" />
-                            <div className="d-flex justify-content-between gap-2 flex-wrap">
-                              <span className="kbd-hint">Image attached</span>
-                              <button type="button" className="editor-action" onClick={() => setFormState((currentForm) => ({ ...currentForm, coverImage: '' }))}>
-                                Remove image
-                              </button>
+                  {adminUnlocked ? (
+                    <Form onSubmit={handleSave} className="studio-form mt-4">
+                      <div className="row g-3">
+                        <div className="col-12 col-md-6">
+                          <Form.Label>Post type</Form.Label>
+                          <Form.Select
+                            value={formState.postType}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, postType: event.target.value }))}
+                          >
+                            <option value="publication">Publication</option>
+                            <option value="blog">Blog</option>
+                          </Form.Select>
+                        </div>
+                        <div className="col-12 col-md-3">
+                          <Form.Label>Status</Form.Label>
+                          <Form.Select
+                            value={formState.status}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, status: event.target.value }))}
+                          >
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                          </Form.Select>
+                        </div>
+                        <div className="col-12 col-md-3">
+                          <Form.Label>Year</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={formState.year}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, year: event.target.value }))}
+                          />
+                        </div>
+                        <div className="col-12">
+                          <Form.Label>Title</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={formState.title}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, title: event.target.value }))}
+                            placeholder="Article title"
+                          />
+                        </div>
+                        <div className="col-12">
+                          <Form.Label>Venue / source</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={formState.venue}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, venue: event.target.value }))}
+                            placeholder="Conference, workshop, or article source"
+                          />
+                        </div>
+                        <div className="col-12">
+                          <Form.Label>Authors / byline</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={formState.authors}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, authors: event.target.value }))}
+                            placeholder="Author list or byline"
+                          />
+                        </div>
+                        <div className="col-12">
+                          <Form.Label>Summary</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows={3}
+                            value={formState.summary}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, summary: event.target.value }))}
+                            placeholder="Short abstract or summary"
+                          />
+                        </div>
+                        <div className="col-12">
+                          <Form.Label>Markdown content</Form.Label>
+                          <Form.Control
+                            as="textarea"
+                            rows={12}
+                            value={formState.content}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, content: event.target.value }))}
+                            placeholder="Write in markdown"
+                            className="markdown-input"
+                          />
+                        </div>
+                        <div className="col-12 col-md-6">
+                          <Form.Label>Tags</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={formState.tags}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, tags: event.target.value }))}
+                            placeholder="Comma-separated tags"
+                          />
+                        </div>
+                        <div className="col-12 col-md-6">
+                          <Form.Label>Reading time</Form.Label>
+                          <Form.Control
+                            type="number"
+                            min="1"
+                            value={formState.readingMinutes}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, readingMinutes: event.target.value }))}
+                          />
+                        </div>
+                        <div className="col-12">
+                          <Form.Label>External link</Form.Label>
+                          <Form.Control
+                            type="url"
+                            value={formState.externalUrl}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, externalUrl: event.target.value }))}
+                            placeholder="https://..."
+                          />
+                        </div>
+                        <div className="col-12">
+                          <Form.Label>Cover image</Form.Label>
+                          <Form.Control type="file" accept="image/*" onChange={handleFileChange} />
+                        </div>
+                        <div className="col-12">
+                          {formState.coverImage ? (
+                            <div className="editor-preview">
+                              <img src={formState.coverImage} alt="Preview cover" className="mb-3" />
+                              <div className="d-flex justify-content-between gap-2 flex-wrap">
+                                <span className="kbd-hint">Image attached</span>
+                                <button type="button" className="editor-action" onClick={() => setFormState((currentForm) => ({ ...currentForm, coverImage: '' }))}>
+                                  Remove image
+                                </button>
+                              </div>
                             </div>
+                          ) : null}
+                        </div>
+                        <div className="col-12 d-flex flex-wrap gap-2">
+                          <Form.Check
+                            type="checkbox"
+                            id="featured-toggle"
+                            label="Mark as featured"
+                            checked={formState.featured}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, featured: event.target.checked }))}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="editor-preview mt-4">
+                        <div className="preview-title">
+                          <h4>{formState.title || 'Live preview'}</h4>
+                          <div className="reader-meta">
+                            <span className="year-pill">{formState.year}</span>
+                            <span className="status-pill">{formState.postType}</span>
+                            <span className="status-pill">{formState.status}</span>
+                          </div>
+                        </div>
+                        {formState.coverImage ? (
+                          <div className="reader-cover mb-3">
+                            <img src={formState.coverImage} alt="Preview cover" />
                           </div>
                         ) : null}
+                        <MarkdownRenderer markdown={formState.content} />
                       </div>
-                      <div className="col-12 d-flex flex-wrap gap-2">
-                        <Form.Check
-                          type="checkbox"
-                          id="featured-toggle"
-                          label="Mark as featured"
-                          checked={formState.featured}
-                          onChange={(event) => setFormState((currentForm) => ({ ...currentForm, featured: event.target.checked }))}
-                        />
-                      </div>
-                    </div>
 
-                    <div className="editor-preview mt-4">
-                      <div className="preview-title">
-                        <h4>{formState.title || 'Live preview'}</h4>
-                        <div className="reader-meta">
-                          <span className="year-pill">{formState.year}</span>
-                          <span className="status-pill">{formState.postType}</span>
-                          <span className="status-pill">{formState.status}</span>
-                        </div>
+                      <div className="editor-footer mt-4">
+                        <button type="submit" className="solid-button">
+                          <FaEdit /> {editingPostId ? 'Update post' : 'Publish post'}
+                        </button>
+                        <button type="button" className="outline-button" onClick={resetForm}>
+                          Cancel
+                        </button>
                       </div>
-                      {formState.coverImage ? (
-                        <div className="reader-cover mb-3">
-                          <img src={formState.coverImage} alt="Preview cover" />
-                        </div>
-                      ) : null}
-                      <MarkdownRenderer markdown={formState.content} />
-                    </div>
-
-                    <div className="editor-footer mt-4">
-                      <button type="submit" className="solid-button">
-                        <FaEdit /> {editingPostId ? 'Update post' : 'Publish post'}
-                      </button>
-                      <button type="button" className="outline-button" onClick={resetForm}>
-                        Cancel
-                      </button>
-                    </div>
-                    {statusMessage ? <p className="mb-0 mt-3">{statusMessage}</p> : null}
-                  </Form>
-                ) : null}
+                      {statusMessage ? <p className="mb-0 mt-3">{statusMessage}</p> : null}
+                    </Form>
+                  ) : null}
+                </div>
               </div>
-            </div>
-          </Container>
-        </section>
+            </Container>
+          </section>
+        ) : null}
 
         <section id="awards" className="content-section">
           <Container fluid="lg">
