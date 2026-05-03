@@ -43,6 +43,7 @@ const defaultFormState = {
   status: 'draft',
   featured: false,
   year: new Date().getFullYear().toString(),
+  badgeLabel: '',
   venue: '',
   title: '',
   authors: '',
@@ -75,6 +76,8 @@ const slugify = (input) =>
     .replace(/^-+|-+$/g, '') || `post-${Date.now()}`;
 
 const asTagString = (tags) => (Array.isArray(tags) ? tags.join(', ') : String(tags || ''));
+
+const getPostBadgeLabel = (post) => String(post?.badgeLabel || '').trim() || (post?.postType === 'publication' ? 'Research' : 'Note');
 
 const safeMarkdownText = (value) => String(value || '').trim();
 
@@ -264,12 +267,19 @@ function SectionHeading({ eyebrow, title, copy }) {
 
 function PublicationCard({ post, onOpen, onEdit, onRemove, onCopy, adminUnlocked }) {
   const tagList = Array.isArray(post.tags) ? post.tags : normalizeTags(post.tags);
+  const badgeLabel = getPostBadgeLabel(post);
 
   return (
     <article className="publication-card" id={`post-${post.slug}`}>
       <div className="publication-year">
         <span className="year-pill">{post.year}</span>
-        <span className="status-pill">{post.postType === 'publication' ? 'Research' : 'Note'}</span>
+        {adminUnlocked ? (
+          <button type="button" className="status-pill status-pill-button" onClick={() => onEdit(post)} aria-label={`Edit ${post.postType === 'publication' ? 'research' : 'note'} badge`}>
+            {badgeLabel}
+          </button>
+        ) : (
+          <span className="status-pill">{badgeLabel}</span>
+        )}
       </div>
       <div className="publication-body">
         <div className="publication-toolbar">
@@ -475,6 +485,7 @@ function PortfolioPage() {
               readingMinutes: post.readingMinutes || post.reading_minutes || 1,
               summary: post.summary || post.excerpt || '',
               externalUrl: post.externalUrl || post.external_url || '',
+              badgeLabel: post.badgeLabel || post.badge_label || '',
               title: post.title || 'Untitled post',
               id: post.id || post.slug || slugify(post.title),
               slug: post.slug || slugify(post.title),
@@ -543,6 +554,7 @@ function PortfolioPage() {
       status: post.status || 'draft',
       featured: Boolean(post.featured),
       year: post.year || new Date().getFullYear().toString(),
+      badgeLabel: post.badgeLabel || '',
       venue: post.venue || '',
       title: post.title || '',
       authors: post.authors || '',
@@ -599,6 +611,7 @@ function PortfolioPage() {
       status: formState.status,
       featured: formState.featured,
       year: String(formState.year || new Date().getFullYear()),
+      badgeLabel: formState.badgeLabel.trim(),
       venue: formState.venue.trim(),
       title: formState.title.trim(),
       authors: formState.authors.trim(),
@@ -612,6 +625,27 @@ function PortfolioPage() {
       publishedAt: formState.status === 'published' ? new Date().toISOString() : null,
     };
 
+    const supabasePayload = {
+      id: normalizedPost.id,
+      slug: normalizedPost.slug,
+      post_type: normalizedPost.postType,
+      status: normalizedPost.status,
+      featured: normalizedPost.featured,
+      year: normalizedPost.year,
+      badge_label: normalizedPost.badgeLabel,
+      venue: normalizedPost.venue,
+      title: normalizedPost.title,
+      authors: normalizedPost.authors,
+      summary: normalizedPost.summary,
+      content: normalizedPost.content,
+      tags: normalizedPost.tags,
+      cover_image: normalizedPost.coverImage,
+      external_url: normalizedPost.externalUrl,
+      reading_minutes: normalizedPost.readingMinutes,
+      updated_at: normalizedPost.updatedAt,
+      published_at: normalizedPost.publishedAt,
+    };
+
     const nextPosts = editingPostId
       ? posts.map((post) => (post.id === editingPostId ? normalizedPost : post))
       : [normalizedPost, ...posts];
@@ -619,7 +653,7 @@ function PortfolioPage() {
     setPosts(nextPosts);
 
     try {
-      await persistToSupabase(normalizedPost);
+      await persistToSupabase(supabasePayload);
       setStatusMessage('Post saved locally and sent to Supabase when configured.');
     } catch {
       setStatusMessage('Post saved locally. Configure Supabase to persist remotely.');
@@ -953,6 +987,15 @@ function PortfolioPage() {
                             type="text"
                             value={formState.year}
                             onChange={(event) => setFormState((currentForm) => ({ ...currentForm, year: event.target.value }))}
+                          />
+                        </div>
+                        <div className="col-12 col-md-4">
+                          <Form.Label>Badge label</Form.Label>
+                          <Form.Control
+                            type="text"
+                            value={formState.badgeLabel}
+                            onChange={(event) => setFormState((currentForm) => ({ ...currentForm, badgeLabel: event.target.value }))}
+                            placeholder="Research, Ranking A, Workshop..."
                           />
                         </div>
                         <div className="col-12">

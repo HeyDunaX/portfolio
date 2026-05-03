@@ -17,6 +17,7 @@ create table if not exists public.portfolio_posts (
   status text not null default 'draft' check (status in ('draft', 'published')),
   featured boolean not null default false,
   year text not null,
+  badge_label text not null default '',
   venue text not null default '',
   title text not null,
   authors text not null default '',
@@ -89,3 +90,6 @@ using (public.is_portfolio_admin());
 
 create index if not exists portfolio_posts_status_idx on public.portfolio_posts (status, post_type, year desc);
 create index if not exists portfolio_posts_featured_idx on public.portfolio_posts (featured, status);
+
+alter table public.portfolio_posts
+  add column if not exists badge_label text not null default '';

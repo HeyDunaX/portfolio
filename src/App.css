@@ -368,6 +368,21 @@
   color: var(--text-secondary);
 }
 
+.status-pill-button {
+  cursor: pointer;
+  appearance: none;
+  transition: transform 150ms ease, border-color 150ms ease, background 150ms ease, color 150ms ease, box-shadow 150ms ease;
+}
+
+.status-pill-button:hover,
+.status-pill-button:focus-visible {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
 .meta-pill strong,
 .status-pill strong {
   color: var(--text-primary);
