@@ -76,6 +76,7 @@ The private editor now uses Supabase Auth instead of a local access key, so it w
 2. Insert that user's `auth.users.id` into `public.portfolio_admins` with `is_active = true`.
 3. Keep `REACT_APP_SUPABASE_URL`, `REACT_APP_SUPABASE_ANON_KEY`, and `REACT_APP_SUPABASE_TABLE` configured in the frontend.
 4. Sign in through the site's private login form with the same Supabase account on every machine.
+5. If you change `.env.local`, restart `npm start`; if the site is deployed on Vercel, set the same env vars in Vercel Project Settings and redeploy.
 
 ---
 
