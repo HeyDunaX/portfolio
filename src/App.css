@@ -436,6 +436,10 @@
   padding-inline: 0.2rem;
 }
 
+.image-upload-button {
+  cursor: pointer;
+}
+
 .social-links {
   display: flex;
   flex-wrap: wrap;

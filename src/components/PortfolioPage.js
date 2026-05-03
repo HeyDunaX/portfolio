@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Badge, Container, Form, Modal, Nav, Navbar } from 'react-bootstrap';
 import {
   FaArrowRight,
@@ -424,6 +424,7 @@ function PortfolioPage() {
   const [formState, setFormState] = useState(defaultFormState);
   const [statusMessage, setStatusMessage] = useState('');
   const [loginError, setLoginError] = useState('');
+  const contentTextareaRef = useRef(null);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -579,6 +580,55 @@ function PortfolioPage() {
       setFormState((currentForm) => ({ ...currentForm, coverImage: String(reader.result || '') }));
     };
     reader.readAsDataURL(file);
+  };
+
+  const insertTextAtCursor = (text) => {
+    const textarea = contentTextareaRef.current;
+
+    if (!textarea) {
+      setFormState((currentForm) => ({
+        ...currentForm,
+        content: `${currentForm.content || ''}${currentForm.content ? '\n\n' : ''}${text}`,
+      }));
+      return;
+    }
+
+    const start = textarea.selectionStart ?? formState.content.length;
+    const end = textarea.selectionEnd ?? formState.content.length;
+    const nextContent = `${formState.content.slice(0, start)}${text}${formState.content.slice(end)}`;
+
+    setFormState((currentForm) => ({ ...currentForm, content: nextContent }));
+
+    window.requestAnimationFrame(() => {
+      textarea.focus();
+      const cursorPosition = start + text.length;
+      textarea.setSelectionRange(cursorPosition, cursorPosition);
+    });
+  };
+
+  const handleInsertImages = async (event) => {
+    const files = Array.from(event.target.files || []);
+
+    if (files.length === 0) {
+      return;
+    }
+
+    const imageSnippets = await Promise.all(
+      files.map(
+        (file) =>
+          new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              const fileName = file.name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim() || 'image';
+              resolve(`![${fileName}](${String(reader.result || '')})`);
+            };
+            reader.readAsDataURL(file);
+          }),
+      ),
+    );
+
+    insertTextAtCursor(`\n\n${imageSnippets.join('\n\n')}\n\n`);
+    event.target.value = '';
   };
 
   const persistToSupabase = async (payload) => {
@@ -1038,7 +1088,16 @@ function PortfolioPage() {
                           />
                         </div>
                         <div className="col-12">
-                          <Form.Label>Markdown content</Form.Label>
+                          <div className="d-flex align-items-center justify-content-between gap-2 flex-wrap">
+                            <Form.Label className="mb-0">Markdown content</Form.Label>
+                            <div className="d-flex flex-wrap gap-2 align-items-center">
+                              <span className="kbd-hint">Use markdown for headings, links, and images</span>
+                              <Form.Label className="editor-action mb-0 image-upload-button">
+                                <FaPlus /> Insert images
+                                <Form.Control type="file" accept="image/*" multiple onChange={handleInsertImages} className="d-none" />
+                              </Form.Label>
+                            </div>
+                          </div>
                           <Form.Control
                             as="textarea"
                             rows={12}
@@ -1046,6 +1105,7 @@ function PortfolioPage() {
                             onChange={(event) => setFormState((currentForm) => ({ ...currentForm, content: event.target.value }))}
                             placeholder="Write in markdown"
                             className="markdown-input"
+                            ref={contentTextareaRef}
                           />
                         </div>
                         <div className="col-12 col-md-6">
